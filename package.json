@@ -10,6 +10,7 @@
     "smoke": "node scripts/smoke.mjs",
     "playtest": "node scripts/playtest.mjs",
     "browser:smoke": "node scripts/browser-smoke.mjs",
+    "pages:package": "node scripts/package-pages.mjs",
     "release": "npm run export:config && npm run smoke && node scripts/release.mjs",
     "test": "node --test"
   }

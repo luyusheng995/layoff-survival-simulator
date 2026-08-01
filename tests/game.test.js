@@ -570,6 +570,35 @@ test('browser smoke retries Linux profile cleanup races', () => {
   assert.ok(script.includes('cleanupRetryableErrors'));
 });
 
+test('pages package manifest contains runtime static assets only', async () => {
+  const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
+  const manifest = createPagesPackageManifest();
+
+  assert.equal(manifest.outputDir, '.pages-dist');
+  assert.deepEqual(manifest.entries.map((entry) => entry.from), ['index.html', 'favicon.svg', 'src', 'dist']);
+  assert.ok(manifest.entries.every((entry) => entry.to === entry.from));
+  assert.ok(manifest.excludedTopLevelPaths.includes('tests'));
+  assert.ok(manifest.excludedTopLevelPaths.includes('release'));
+  assert.ok(manifest.excludedTopLevelPaths.includes('.github'));
+  assert.ok(!manifest.entries.some((entry) => manifest.excludedTopLevelPaths.includes(entry.from)));
+});
+
+test('package json exposes a pages package command', () => {
+  const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+  assert.equal(packageJson.scripts['pages:package'], 'node scripts/package-pages.mjs');
+});
+
+test('github pages workflow deploys the packaged static site', () => {
+  assert.equal(existsSync('.github/workflows/pages.yml'), true);
+  const workflow = readFileSync('.github/workflows/pages.yml', 'utf8');
+  assert.ok(workflow.includes('pages: write'));
+  assert.ok(workflow.includes('id-token: write'));
+  assert.ok(workflow.includes('npm run pages:package'));
+  assert.ok(workflow.includes('actions/upload-pages-artifact'));
+  assert.ok(workflow.includes('path: .pages-dist'));
+  assert.ok(workflow.includes('actions/deploy-pages'));
+});
+
 test('simulation is deterministic for the same seed', () => {
   const first = simulateRuns({ runs: 25, seed: 12345 });
   const second = simulateRuns({ runs: 25, seed: 12345 });

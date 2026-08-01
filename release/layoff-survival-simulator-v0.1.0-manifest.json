@@ -3,7 +3,7 @@
   "packageName": "layoff-survival-simulator-v0.1.0",
   "archiveName": "layoff-survival-simulator-v0.1.0.zip",
   "version": "0.1.0",
-  "generatedAt": "2026-08-01T15:40:02.915Z",
+  "generatedAt": "2026-08-01T16:06:43.435Z",
   "title": "大厂裁员生存模拟器",
   "eventCount": 200,
   "eventMix": {
@@ -13,7 +13,7 @@
   },
   "endingCount": 12,
   "adPlacementCount": 5,
-  "totalBytes": 1448823,
+  "totalBytes": 1460134,
   "files": [
     {
       "path": "balance/balance-alpha.csv",
@@ -41,11 +41,11 @@
     },
     {
       "path": "docs/qa/screenshots/m17-desktop.png",
-      "bytes": 285286
+      "bytes": 291235
     },
     {
       "path": "docs/qa/screenshots/m17-mobile.png",
-      "bytes": 814496
+      "bytes": 819340
     },
     {
       "path": "favicon.svg",
@@ -57,7 +57,7 @@
     },
     {
       "path": "package.json",
-      "bytes": 513
+      "bytes": 568
     },
     {
       "path": "scripts/browser-smoke.mjs",
@@ -146,6 +146,10 @@
     {
       "path": "src/game/onboarding.js",
       "bytes": 1439
+    },
+    {
+      "path": "src/game/pages-package.js",
+      "bytes": 463
     },
     {
       "path": "src/game/playtest.js",
