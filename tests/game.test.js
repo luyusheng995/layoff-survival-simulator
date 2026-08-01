@@ -26,6 +26,7 @@ import { createDeliveryMarkdown, createGameConfig } from '../src/game/config-exp
 import { createReleaseChecklist, createReleaseChecklistMarkdown } from '../src/game/release-checklist.js';
 import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../src/game/release-package.js';
 import { createFirstMinuteFunnel } from '../src/game/funnel.js';
+import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playtest.js';
 
 test('initial state matches prototype stat rules', () => {
   const state = createInitialState();
@@ -453,6 +454,27 @@ test('first screen funnel recommends revive during failure modal', () => {
   assert.equal(funnel.stage, 'game_over');
   assert.equal(funnel.primaryAd.id, 'revive');
   assert.ok(funnel.primaryAd.reason.includes('复活'));
+});
+
+test('playtest scenarios cover first minute crisis revive and ending paths', () => {
+  const report = runPlaytestScenarios();
+  assert.equal(report.passed, true);
+  assert.deepEqual(report.scenarios.map((scenario) => scenario.id), [
+    'first_minute',
+    'crisis_skip',
+    'failure_revive',
+    'ending_share'
+  ]);
+  assert.ok(report.scenarios.every((scenario) => scenario.passed));
+  assert.ok(report.findings.some((finding) => finding.priority === 'P1'));
+});
+
+test('playtest markdown renders scenario and finding summary', () => {
+  const markdown = createPlaytestMarkdown(runPlaytestScenarios());
+  assert.ok(markdown.includes('# M16 真实玩家试玩 QA 报告'));
+  assert.ok(markdown.includes('## 试玩路径'));
+  assert.ok(markdown.includes('first_minute'));
+  assert.ok(markdown.includes('## 问题清单'));
 });
 
 test('simulation is deterministic for the same seed', () => {

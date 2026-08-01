@@ -13,8 +13,10 @@ const includePaths = [
   'scripts/simulate.mjs',
   'scripts/export-config.mjs',
   'scripts/smoke.mjs',
+  'scripts/playtest.mjs',
   'dist/game-config.json',
   'docs/delivery',
+  'docs/qa',
   'balance'
 ];
 

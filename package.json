@@ -8,6 +8,7 @@
     "simulate": "node scripts/simulate.mjs",
     "export:config": "node scripts/export-config.mjs",
     "smoke": "node scripts/smoke.mjs",
+    "playtest": "node scripts/playtest.mjs",
     "release": "npm run export:config && npm run smoke && node scripts/release.mjs",
     "test": "node --test"
   }
