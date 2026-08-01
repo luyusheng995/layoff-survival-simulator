@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Show Node.js version
+        run: node --version
+
+      - name: Unit tests
+        run: node --test
+
+      - name: Playtest QA
+        run: npm run playtest
+
+      - name: Browser smoke
+        run: npm run browser:smoke
+
+      - name: Balance simulation
+        run: npm run simulate -- --runs 1000 --seed 20260731 --difficulty normal
+
+      - name: Release package
+        run: npm run release
+
+      - name: Upload QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-artifacts
+          path: |
+            docs/qa/
+            release/

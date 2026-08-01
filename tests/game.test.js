@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
 import { createInitialState } from '../src/game/state.js';
 import { applyAction } from '../src/game/actions.js';
 import { EVENTS } from '../src/data/events.js';
@@ -543,6 +544,24 @@ test('ad inventory keeps available non-featured ads actionable', () => {
   assert.equal(talent.actionable, true);
   assert.equal(talent.available, true);
   assert.ok(talent.statusText.includes('开放'));
+});
+
+test('ci workflow runs the full quality gate', () => {
+  assert.equal(existsSync('.github/workflows/ci.yml'), true);
+  const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
+  assert.ok(workflow.includes('node --test'));
+  assert.ok(workflow.includes('npm run playtest'));
+  assert.ok(workflow.includes('npm run browser:smoke'));
+  assert.ok(workflow.includes('npm run simulate -- --runs 1000 --seed 20260731 --difficulty normal'));
+  assert.ok(workflow.includes('npm run release'));
+  assert.ok(workflow.includes('actions/upload-artifact'));
+});
+
+test('browser smoke includes cross platform Chromium candidates', () => {
+  const script = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(script.includes('C:\\\\Program Files (x86)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe'));
+  assert.ok(script.includes('/usr/bin/google-chrome'));
+  assert.ok(script.includes('/usr/bin/chromium'));
 });
 
 test('simulation is deterministic for the same seed', () => {
