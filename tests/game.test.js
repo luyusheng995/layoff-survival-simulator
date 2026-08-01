@@ -154,6 +154,8 @@ test('mock rewarded ad returns placement metadata', async () => {
   assert.equal(result.ok, true);
   assert.equal(result.placement, 'dailyBuff');
   assert.equal(result.durationSeconds, 30);
+  assert.equal(result.playbackMode, 'mock');
+  assert.equal(result.mockPlaybackMs, 450);
   assert.ok(result.reward.includes('摸鱼'));
 });
 
@@ -468,7 +470,7 @@ test('playtest scenarios cover first minute crisis revive and ending paths', () 
     'ending_share'
   ]);
   assert.ok(report.scenarios.every((scenario) => scenario.passed));
-  assert.ok(report.findings.some((finding) => finding.priority === 'P1'));
+  assert.equal(report.findings.length, 0);
 });
 
 test('playtest markdown renders scenario and finding summary', () => {
@@ -477,6 +479,7 @@ test('playtest markdown renders scenario and finding summary', () => {
   assert.ok(markdown.includes('## 试玩路径'));
   assert.ok(markdown.includes('first_minute'));
   assert.ok(markdown.includes('## 问题清单'));
+  assert.ok(markdown.includes('暂无开放问题。'));
 });
 
 test('browser smoke report summarizes desktop and mobile results', () => {

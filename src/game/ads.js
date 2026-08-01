@@ -77,6 +77,8 @@ export function watchRewardedAd(placement) {
       ok: true,
       placement,
       durationSeconds: metadata.durationSeconds,
+      playbackMode: 'mock',
+      mockPlaybackMs: 450,
       reward: metadata.reward
     }), 450);
   });
