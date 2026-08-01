@@ -325,9 +325,13 @@ function terminateProcess(processHandle) {
       return;
     }
 
-    const timer = setTimeout(resolve, 2500);
+    const forceTimer = setTimeout(() => {
+      processHandle.kill('SIGKILL');
+    }, 2500);
+    const giveUpTimer = setTimeout(resolve, 5000);
     processHandle.once('exit', () => {
-      clearTimeout(timer);
+      clearTimeout(forceTimer);
+      clearTimeout(giveUpTimer);
       resolve();
     });
     processHandle.kill();
@@ -339,15 +343,21 @@ async function cleanupProfile(profileDir) {
     return;
   }
 
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  const cleanupRetryableErrors = new Set(['EBUSY', 'EPERM', 'ENOTEMPTY']);
+
+  for (let attempt = 0; attempt < 6; attempt += 1) {
     try {
-      await rm(profileDir, { recursive: true, force: true });
+      await rm(profileDir, { recursive: true, force: true, maxRetries: 2, retryDelay: 200 });
       return;
     } catch (error) {
-      if (error.code !== 'EBUSY' && error.code !== 'EPERM') {
+      if (!cleanupRetryableErrors.has(error.code)) {
         throw error;
       }
-      await sleep(300);
+      if (attempt === 5) {
+        console.warn(`Skipped browser profile cleanup after repeated ${error.code}: ${profileDir}`);
+        return;
+      }
+      await sleep(300 * (attempt + 1));
     }
   }
 }

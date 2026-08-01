@@ -564,6 +564,12 @@ test('browser smoke includes cross platform Chromium candidates', () => {
   assert.ok(script.includes('/usr/bin/chromium'));
 });
 
+test('browser smoke retries Linux profile cleanup races', () => {
+  const script = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(script.includes('ENOTEMPTY'));
+  assert.ok(script.includes('cleanupRetryableErrors'));
+});
+
 test('simulation is deterministic for the same seed', () => {
   const first = simulateRuns({ runs: 25, seed: 12345 });
   const second = simulateRuns({ runs: 25, seed: 12345 });

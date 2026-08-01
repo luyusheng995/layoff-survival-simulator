@@ -2,7 +2,7 @@
 
 版本：0.1.0
 归档包：layoff-survival-simulator-v0.1.0.zip
-生成时间：2026-08-01T15:28:55.564Z
+生成时间：2026-08-01T15:40:02.915Z
 
 ## 内容摘要
 
@@ -11,7 +11,7 @@
 - 结局数：12
 - 广告点位：5
 - 文件数：42
-- 文件总大小：1448598 bytes
+- 文件总大小：1448823 bytes
 
 ## 运行方式
 
@@ -29,12 +29,12 @@
 | docs/delivery/release-checklist.md | 879 |
 | docs/qa/m16-playtest-report.md | 1013 |
 | docs/qa/m17-browser-smoke-report.md | 1856 |
-| docs/qa/screenshots/m17-desktop.png | 286364 |
-| docs/qa/screenshots/m17-mobile.png | 813597 |
+| docs/qa/screenshots/m17-desktop.png | 285286 |
+| docs/qa/screenshots/m17-mobile.png | 814496 |
 | favicon.svg | 376 |
 | index.html | 469 |
 | package.json | 513 |
-| scripts/browser-smoke.mjs | 11018 |
+| scripts/browser-smoke.mjs | 11422 |
 | scripts/export-config.mjs | 896 |
 | scripts/playtest.mjs | 626 |
 | scripts/server.mjs | 1414 |
