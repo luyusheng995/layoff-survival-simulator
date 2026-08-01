@@ -25,6 +25,7 @@ import { createOnboardingBrief } from '../src/game/onboarding.js';
 import { createDeliveryMarkdown, createGameConfig } from '../src/game/config-export.js';
 import { createReleaseChecklist, createReleaseChecklistMarkdown } from '../src/game/release-checklist.js';
 import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../src/game/release-package.js';
+import { createFirstMinuteFunnel } from '../src/game/funnel.js';
 
 test('initial state matches prototype stat rules', () => {
   const state = createInitialState();
@@ -429,6 +430,29 @@ test('stored zip writer creates a valid zip envelope', () => {
 
   assert.equal(zip.subarray(0, 4).toString('hex'), '504b0304');
   assert.equal(zip.subarray(zip.length - 22, zip.length - 18).toString('hex'), '504b0506');
+});
+
+test('first screen funnel recommends daily buff for a fresh run', () => {
+  const funnel = createFirstMinuteFunnel(createInitialState());
+  assert.equal(funnel.stage, 'first_minute');
+  assert.equal(funnel.primaryAd.id, 'dailyBuff');
+  assert.ok(funnel.headline.includes('第 1 天'));
+  assert.ok(funnel.primaryAd.reason.includes('摸鱼'));
+});
+
+test('first screen funnel recommends crisis skip during active crisis', () => {
+  const funnel = createFirstMinuteFunnel(createInitialState(), { activeEventType: 'crisis' });
+  assert.equal(funnel.stage, 'crisis');
+  assert.equal(funnel.primaryAd.id, 'skipCrisis');
+  assert.ok(funnel.primaryAd.reason.includes('危机'));
+});
+
+test('first screen funnel recommends revive during failure modal', () => {
+  const failed = { ...createInitialState(), stats: { performance: 0, hair: 80, dignity: 70, savings: 5000 } };
+  const funnel = createFirstMinuteFunnel(failed, { modalKind: 'failure' });
+  assert.equal(funnel.stage, 'game_over');
+  assert.equal(funnel.primaryAd.id, 'revive');
+  assert.ok(funnel.primaryAd.reason.includes('复活'));
 });
 
 test('simulation is deterministic for the same seed', () => {

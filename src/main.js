@@ -9,6 +9,7 @@ import { createShareReport } from './game/report.js';
 import { DIFFICULTIES, getDifficulty } from './game/difficulty.js';
 import { createStatDeltas, getNextCheckpoint } from './game/feedback.js';
 import { createOnboardingBrief } from './game/onboarding.js';
+import { createFirstMinuteFunnel } from './game/funnel.js';
 import {
   AD_PLACEMENTS,
   activateDailyBuff,
@@ -173,6 +174,7 @@ function ensureEvent() {
 
 function renderStats() {
   const checkpoint = getNextCheckpoint(state.day);
+  const funnel = createFirstMinuteFunnel(state, adContext());
   const stats = [
     ['performance', state.stats.performance],
     ['hair', state.stats.hair],
@@ -184,11 +186,17 @@ function renderStats() {
   return `
     <section class="topbar">
       <div class="title-row">
-        <div>
+        <div class="hero-memo">
+          <span class="memo-label">SURVIVAL DESK</span>
           <h1>大厂裁员生存模拟器</h1>
           <p class="subtitle">90 天裁员潮，每天 3 点精力，活到年底或反向晋升。</p>
         </div>
         <div class="day-pill">第 ${state.day} 天 · ${difficultyLabel()} · 精力 ${state.energy}/3</div>
+      </div>
+      <div class="funnel-brief">
+        <span>今日工位简报</span>
+        <strong>${escapeHtml(funnel.headline)}</strong>
+        <small>${escapeHtml(funnel.summary)}</small>
       </div>
       <div class="stats-grid">
         ${stats.map(([key, value]) => `
@@ -206,6 +214,25 @@ function renderStats() {
         </div>
         ${renderFeedback()}
       </div>
+    </section>
+  `;
+}
+
+function renderRecommendedAd() {
+  const funnel = createFirstMinuteFunnel(state, adContext());
+  if (!funnel.primaryAd) return '';
+
+  return `
+    <section class="funnel-card">
+      <div>
+        <span class="funnel-kicker">今日救命广告</span>
+        <h2>${escapeHtml(funnel.primaryAd.title)}</h2>
+        <p>${escapeHtml(funnel.primaryAd.reason)}</p>
+        <small>${escapeHtml(funnel.primaryAd.reward)}</small>
+      </div>
+      <button class="funnel-ad-button" data-ad="${escapeHtml(funnel.primaryAd.id)}">
+        ${escapeHtml(funnel.primaryAd.buttonText)}
+      </button>
     </section>
   `;
 }
@@ -351,23 +378,27 @@ function renderEvent() {
 }
 
 function renderAds() {
+  const recommendedAd = createFirstMinuteFunnel(state, adContext()).primaryAd?.id;
   return `
     <section class="panel">
-      <h2>激励视频点位</h2>
-      <p class="panel-note">所有广告位都是 30 秒激励视频模拟，后续可替换真实 SDK。</p>
+      <h2>广告库存</h2>
+      <p class="panel-note">左侧只推一个最该看的广告，这里保留完整 30 秒激励视频库存。</p>
       <div class="ad-placement-list">
-        ${AD_PLACEMENTS.filter((placement) => placement.id !== 'revive' && placement.id !== 'skipCrisis').map(renderAdPlacement).join('')}
+        ${AD_PLACEMENTS
+          .filter((placement) => placement.id !== 'revive' && placement.id !== 'skipCrisis')
+          .map((placement) => renderAdPlacement(placement, placement.id === recommendedAd))
+          .join('')}
       </div>
     </section>
   `;
 }
 
-function renderAdPlacement(placement) {
+function renderAdPlacement(placement, recommended = false) {
   const availability = canUseRewardedAd(state, placement.id, adContext());
   const watched = state.metrics?.adPlacements?.[placement.id] || 0;
   return `
-    <button class="ad-placement ${availability.ok ? 'available' : 'locked'}" data-ad="${escapeHtml(placement.id)}" ${availability.ok ? '' : 'disabled'}>
-      <span class="ad-placement-kicker">${escapeHtml(placement.title)} · 已看 ${watched} 次</span>
+    <button class="ad-placement ${availability.ok ? 'available' : 'locked'} ${recommended ? 'recommended' : ''}" data-ad="${escapeHtml(placement.id)}" ${availability.ok ? '' : 'disabled'}>
+      <span class="ad-placement-kicker">${escapeHtml(placement.title)} · 已看 ${watched} 次${recommended ? ' · 左侧推荐' : ''}</span>
       <strong>${escapeHtml(placement.buttonText)}</strong>
       <small>${escapeHtml(availability.ok ? placement.reward : availability.reason)}</small>
     </button>
@@ -474,6 +505,7 @@ function render() {
       <div class="main-grid">
         <div class="game-column">
           ${renderOnboarding()}
+          ${renderRecommendedAd()}
           ${renderActions()}
           ${renderEvent()}
         </div>

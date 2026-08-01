@@ -2,7 +2,7 @@
 
 版本：0.1.0
 归档包：layoff-survival-simulator-v0.1.0.zip
-生成时间：2026-08-01T12:15:55.930Z
+生成时间：2026-08-01T13:11:48.707Z
 
 ## 内容摘要
 
@@ -10,8 +10,8 @@
 - 日常/危机/机遇：140/40/20
 - 结局数：12
 - 广告点位：5
-- 文件数：31
-- 文件总大小：318574 bytes
+- 文件数：32
+- 文件总大小：324920 bytes
 
 ## 运行方式
 
@@ -43,6 +43,7 @@
 | src/game/endings.js | 2785 |
 | src/game/events.js | 3027 |
 | src/game/feedback.js | 1566 |
+| src/game/funnel.js | 2889 |
 | src/game/gallery.js | 600 |
 | src/game/layoffs.js | 3730 |
 | src/game/onboarding.js | 1439 |
@@ -52,5 +53,5 @@
 | src/game/simulator.js | 4441 |
 | src/game/state.js | 2698 |
 | src/game/talents.js | 1271 |
-| src/main.js | 21463 |
-| src/styles.css | 12553 |
+| src/main.js | 22772 |
+| src/styles.css | 14701 |
