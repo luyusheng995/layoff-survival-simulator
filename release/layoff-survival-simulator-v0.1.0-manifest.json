@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "packageName": "layoff-survival-simulator-v0.1.0",
+  "archiveName": "layoff-survival-simulator-v0.1.0.zip",
+  "version": "0.1.0",
+  "generatedAt": "2026-08-01T12:15:55.930Z",
+  "title": "大厂裁员生存模拟器",
+  "eventCount": 200,
+  "eventMix": {
+    "daily": 140,
+    "crisis": 40,
+    "opportunity": 20
+  },
+  "endingCount": 12,
+  "adPlacementCount": 5,
+  "totalBytes": 318574,
+  "files": [
+    {
+      "path": "balance/balance-alpha.csv",
+      "bytes": 4655
+    },
+    {
+      "path": "dist/game-config.json",
+      "bytes": 193721
+    },
+    {
+      "path": "docs/delivery/game-config.md",
+      "bytes": 2336
+    },
+    {
+      "path": "docs/delivery/release-checklist.md",
+      "bytes": 879
+    },
+    {
+      "path": "index.html",
+      "bytes": 403
+    },
+    {
+      "path": "package.json",
+      "bytes": 413
+    },
+    {
+      "path": "scripts/export-config.mjs",
+      "bytes": 896
+    },
+    {
+      "path": "scripts/server.mjs",
+      "bytes": 1414
+    },
+    {
+      "path": "scripts/simulate.mjs",
+      "bytes": 714
+    },
+    {
+      "path": "scripts/smoke.mjs",
+      "bytes": 1018
+    },
+    {
+      "path": "src/data/endings.js",
+      "bytes": 2667
+    },
+    {
+      "path": "src/data/events.js",
+      "bytes": 31801
+    },
+    {
+      "path": "src/game/actions.js",
+      "bytes": 1305
+    },
+    {
+      "path": "src/game/ads.js",
+      "bytes": 4913
+    },
+    {
+      "path": "src/game/config-export.js",
+      "bytes": 3402
+    },
+    {
+      "path": "src/game/constants.js",
+      "bytes": 1265
+    },
+    {
+      "path": "src/game/difficulty.js",
+      "bytes": 727
+    },
+    {
+      "path": "src/game/endings.js",
+      "bytes": 2785
+    },
+    {
+      "path": "src/game/events.js",
+      "bytes": 3027
+    },
+    {
+      "path": "src/game/feedback.js",
+      "bytes": 1566
+    },
+    {
+      "path": "src/game/gallery.js",
+      "bytes": 600
+    },
+    {
+      "path": "src/game/layoffs.js",
+      "bytes": 3730
+    },
+    {
+      "path": "src/game/onboarding.js",
+      "bytes": 1439
+    },
+    {
+      "path": "src/game/release-checklist.js",
+      "bytes": 1924
+    },
+    {
+      "path": "src/game/release-package.js",
+      "bytes": 5460
+    },
+    {
+      "path": "src/game/report.js",
+      "bytes": 3088
+    },
+    {
+      "path": "src/game/simulator.js",
+      "bytes": 4441
+    },
+    {
+      "path": "src/game/state.js",
+      "bytes": 2698
+    },
+    {
+      "path": "src/game/talents.js",
+      "bytes": 1271
+    },
+    {
+      "path": "src/main.js",
+      "bytes": 21463
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 12553
+    }
+  ]
+}

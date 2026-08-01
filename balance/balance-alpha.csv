@@ -1,0 +1,60 @@
+section,id,name,type,value,notes
+action,overtime,加班干活,performance,+8,提升绩效但消耗发量
+action,overtime,加班干活,hair,-6,高频使用会触发身体类失败
+action,overtime,加班干活,landmine,-2,通过交付降低背锅风险
+action,slack_off,摸鱼划水,performance,-5,每日 buff 可免除该扣分
+action,slack_off,摸鱼划水,hair,+5,恢复身体状态
+action,slack_off,摸鱼划水,dignity,+6,恢复心态
+action,manage_up,向上管理,performance,+6,PPT 之神额外 +3
+action,manage_up,向上管理,dignity,-6,牺牲尊严换可见度
+action,manage_up,向上管理,landmine,+4,过度包装会埋雷
+action,alliance,抱团站队,dignity,-3,牺牲一点自我换情报
+action,alliance,抱团站队,landmine,-8,降低背锅风险
+action,alliance,抱团站队,performance,+2,站队带来轻微绩效收益
+action,side_hustle,副业赚钱,savings,+800,现金流回血
+action,side_hustle,副业赚钱,hair,-5,副业消耗身体
+action,side_hustle,副业赚钱,performance,-2,影响主业可见度
+talent,rich_family,家里有矿,savings_initial,15000,初始存款从 5000 提升到 15000
+talent,blame_master,甩锅宗师,landmine_positive_multiplier,0.5,正向埋雷效果减半向下取整
+talent,ppt_god,PPT 之神,performance_bonus,+3,向上管理和 ppt/reporting 事件选择生效
+ad,deathRevive,死亡复活,revive,once,恢复绩效/发量/尊严至少到 50 存款至少到 2500
+ad,dailyBuff,每日 buff,slackSafe,one_day,当天摸鱼不扣绩效
+ad,talentUnlock,天赋解锁,talentsUnlocked,session,解锁 3 个初始天赋
+ad,endingPreview,查看结局,endingPreviewUnlocked,session,显示隐藏结局条件
+ad,skipCrisis,跳过危机,skipCrisisUsed,once,跳过一次危机事件并进入下一天
+ending,fired_performance,试用期被优化,condition,performance<=0,绩效分归零
+ending,hair_collapse,身体垮掉主动离职,condition,hair<=0,发量值归零
+ending,quit_naked,心态崩溃裸辞,condition,dignity<=0,尊严值归零
+ending,home_rent,交不起房租被迫回老家,condition,savings<=0,存款额归零
+ending,year_bonus,撑到年底拿年终奖,condition,day>=90 performance>=75 hair>=40,普通胜利
+ending,reverse_promoted,反向晋升为管理层,condition,day>=90 performance>=90 dignity>=40 savings>=20000,高绩效胜利
+ending,side_hustle_escape,副业上岸体面离场,condition,day>=90 savings>=50000,现金流胜利
+ending,silent_survivor,沉默幸存者,condition,day>=90 fallback,普通生存结局
+event_distribution,total,全部事件,count,200,M11 生产规模事件库
+event_distribution,daily,日常事件,count,140,70% 内容池基础
+event_distribution,crisis,危机事件,count,40,20% 内容池基础
+event_distribution,opportunity,机遇事件,count,20,10% 内容池基础
+difficulty,normal,普通牛马,evaluationMultiplier,1,默认难度
+difficulty,normal,普通牛马,crisisMultiplier,1,默认危机权重
+difficulty,hard,绩效背锅人,evaluationMultiplier,1.35,裁员评估更狠
+difficulty,hard,绩效背锅人,crisisMultiplier,1.35,危机权重更高
+difficulty,nightmare,裁员重灾区,evaluationMultiplier,1.75,高压调试档
+difficulty,nightmare,裁员重灾区,crisisMultiplier,1.7,危机显著增多
+layoff_evaluation,day30,试用期校准,stageMultiplier,0.25,事件后触发
+layoff_evaluation,day60,预算冻结校准,stageMultiplier,0.4,事件后触发
+layoff_evaluation,day90,年终名单校准,stageMultiplier,3,事件后触发
+revive,deathRevive,死亡复活,core_floor,40,恢复绩效/发量/尊严到至少 40 后尊严额外扣 8
+revive,deathRevive,死亡复活,savings_floor,2000,存款至少恢复到 2000
+revive,deathRevive,死亡复活,landmine,+18,复活后组织盯防
+living_cost,normal_day30,普通牛马第30天,savings,-5000,试用期生活成本
+living_cost,normal_day60,普通牛马第60天,savings,-5000,预算冻结生活成本
+living_cost,normal_day90,普通牛马第90天,savings,-30000,年终生活成本
+living_cost,hard_day30,绩效背锅人第30天,savings,-7000,试用期生活成本
+living_cost,hard_day60,绩效背锅人第60天,savings,-7000,预算冻结生活成本
+living_cost,hard_day90,绩效背锅人第90天,savings,-36000,年终生活成本
+living_cost,nightmare_day30,裁员重灾区第30天,savings,-9000,试用期生活成本
+living_cost,nightmare_day60,裁员重灾区第60天,savings,-9000,预算冻结生活成本
+living_cost,nightmare_day90,裁员重灾区第90天,savings,-45000,年终生活成本
+dignity_pressure,day30,试用期校准,dignity,-4,固定尊严压力
+dignity_pressure,day60,预算冻结校准,dignity,-7,固定尊严压力
+dignity_pressure,day90,年终名单校准,dignity,-42,固定尊严压力

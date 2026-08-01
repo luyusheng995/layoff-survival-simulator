@@ -1,0 +1,14 @@
+{
+  "name": "layoff-survival-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/server.mjs",
+    "simulate": "node scripts/simulate.mjs",
+    "export:config": "node scripts/export-config.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "release": "npm run export:config && npm run smoke && node scripts/release.mjs",
+    "test": "node --test"
+  }
+}
