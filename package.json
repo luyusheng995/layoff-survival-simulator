@@ -9,6 +9,7 @@
     "export:config": "node scripts/export-config.mjs",
     "smoke": "node scripts/smoke.mjs",
     "playtest": "node scripts/playtest.mjs",
+    "browser:smoke": "node scripts/browser-smoke.mjs",
     "release": "npm run export:config && npm run smoke && node scripts/release.mjs",
     "test": "node --test"
   }

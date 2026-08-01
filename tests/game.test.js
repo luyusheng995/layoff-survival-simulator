@@ -27,6 +27,7 @@ import { createReleaseChecklist, createReleaseChecklistMarkdown } from '../src/g
 import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../src/game/release-package.js';
 import { createFirstMinuteFunnel } from '../src/game/funnel.js';
 import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playtest.js';
+import { createBrowserSmokeMarkdown, createBrowserSmokeReport } from '../src/game/browser-smoke-report.js';
 
 test('initial state matches prototype stat rules', () => {
   const state = createInitialState();
@@ -475,6 +476,51 @@ test('playtest markdown renders scenario and finding summary', () => {
   assert.ok(markdown.includes('## 试玩路径'));
   assert.ok(markdown.includes('first_minute'));
   assert.ok(markdown.includes('## 问题清单'));
+});
+
+test('browser smoke report summarizes desktop and mobile results', () => {
+  const report = createBrowserSmokeReport([
+    {
+      id: 'desktop',
+      viewport: { width: 1366, height: 900 },
+      passed: true,
+      checks: [{ label: '首屏标题', passed: true }],
+      consoleErrors: [],
+      screenshot: 'docs/qa/screenshots/desktop.png'
+    },
+    {
+      id: 'mobile',
+      viewport: { width: 390, height: 844 },
+      passed: true,
+      checks: [{ label: '推荐广告', passed: true }],
+      consoleErrors: [],
+      screenshot: 'docs/qa/screenshots/mobile.png'
+    }
+  ]);
+
+  assert.equal(report.passed, true);
+  assert.equal(report.results.length, 2);
+  assert.equal(report.results[0].viewport.width, 1366);
+  assert.equal(report.totalChecks, 2);
+  assert.equal(report.failedChecks, 0);
+});
+
+test('browser smoke markdown includes screenshots and viewport summary', () => {
+  const markdown = createBrowserSmokeMarkdown(createBrowserSmokeReport([
+    {
+      id: 'mobile',
+      viewport: { width: 390, height: 844 },
+      passed: true,
+      checks: [{ label: '行动按钮可点击', passed: true }],
+      consoleErrors: [],
+      screenshot: 'docs/qa/screenshots/mobile.png'
+    }
+  ]));
+
+  assert.ok(markdown.includes('# M17 浏览器级 Smoke 报告'));
+  assert.ok(markdown.includes('整体状态：PASS'));
+  assert.ok(markdown.includes('390x844'));
+  assert.ok(markdown.includes('docs/qa/screenshots/mobile.png'));
 });
 
 test('simulation is deterministic for the same seed', () => {

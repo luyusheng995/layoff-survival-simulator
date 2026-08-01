@@ -29,6 +29,8 @@ http://127.0.0.1:4173/
 ```bash
 npm test
 npm run simulate -- --runs 1000 --seed 20260731 --difficulty normal
+npm run playtest
+npm run browser:smoke
 npm run smoke
 ```
 

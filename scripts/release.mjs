@@ -7,6 +7,7 @@ const packageJson = JSON.parse(await readFile(new URL('../package.json', import.
 const config = JSON.parse(await readFile(new URL('../dist/game-config.json', import.meta.url), 'utf8'));
 const includePaths = [
   'index.html',
+  'favicon.svg',
   'package.json',
   'src',
   'scripts/server.mjs',
@@ -14,6 +15,7 @@ const includePaths = [
   'scripts/export-config.mjs',
   'scripts/smoke.mjs',
   'scripts/playtest.mjs',
+  'scripts/browser-smoke.mjs',
   'dist/game-config.json',
   'docs/delivery',
   'docs/qa',
