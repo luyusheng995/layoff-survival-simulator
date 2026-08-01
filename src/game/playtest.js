@@ -143,12 +143,6 @@ function createFindings() {
     },
     {
       priority: 'P2',
-      type: '广告体验',
-      issue: '首屏推荐广告和侧栏广告库存会同时出现同一个广告位，转化意图清楚但有轻微重复感。',
-      recommendation: '侧栏保留库存即可，将已推荐广告折叠成“左侧推荐中”状态，减少首屏噪音。'
-    },
-    {
-      priority: 'P2',
       type: '广告模拟',
       issue: '界面文案写 30 秒激励视频，但 mock 播放约 0.45 秒，试玩时会觉得广告结算过快。',
       recommendation: '保留快速 mock，但在开发模式文案里标注“模拟播放”，接入真实 SDK 前再切换到真实时长。'

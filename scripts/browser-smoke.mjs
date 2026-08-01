@@ -119,6 +119,12 @@ async function runViewportSmoke(debugPort, viewport) {
       'Boolean(document.querySelector("[data-ad=\\"dailyBuff\\"]")) && document.querySelectorAll("[data-action]").length >= 5',
       '推荐广告按钮与 5 个行动按钮存在'
     ));
+    checks.push(await expressionCheck(
+      client,
+      '推荐广告入口不重复',
+      'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 1',
+      '每日 Buff 只有一个可点击 CTA'
+    ));
 
     await client.evaluate(`
       (async () => {

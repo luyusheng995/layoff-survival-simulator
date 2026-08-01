@@ -28,6 +28,7 @@ import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../
 import { createFirstMinuteFunnel } from '../src/game/funnel.js';
 import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playtest.js';
 import { createBrowserSmokeMarkdown, createBrowserSmokeReport } from '../src/game/browser-smoke-report.js';
+import { createAdInventoryItems } from '../src/game/ad-inventory.js';
 
 test('initial state matches prototype stat rules', () => {
   const state = createInitialState();
@@ -521,6 +522,24 @@ test('browser smoke markdown includes screenshots and viewport summary', () => {
   assert.ok(markdown.includes('整体状态：PASS'));
   assert.ok(markdown.includes('390x844'));
   assert.ok(markdown.includes('docs/qa/screenshots/mobile.png'));
+});
+
+test('ad inventory marks the featured recommendation as non-actionable', () => {
+  const items = createAdInventoryItems(createInitialState(), {}, { featuredAdId: 'dailyBuff' });
+  const featured = items.find((item) => item.id === 'dailyBuff');
+  assert.equal(featured.featured, true);
+  assert.equal(featured.actionable, false);
+  assert.equal(featured.available, true);
+  assert.ok(featured.statusText.includes('左侧推荐'));
+});
+
+test('ad inventory keeps available non-featured ads actionable', () => {
+  const items = createAdInventoryItems(createInitialState(), {}, { featuredAdId: 'dailyBuff' });
+  const talent = items.find((item) => item.id === 'talentUnlock');
+  assert.equal(talent.featured, false);
+  assert.equal(talent.actionable, true);
+  assert.equal(talent.available, true);
+  assert.ok(talent.statusText.includes('开放'));
 });
 
 test('simulation is deterministic for the same seed', () => {

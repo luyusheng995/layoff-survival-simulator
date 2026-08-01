@@ -10,6 +10,7 @@ import { DIFFICULTIES, getDifficulty } from './game/difficulty.js';
 import { createStatDeltas, getNextCheckpoint } from './game/feedback.js';
 import { createOnboardingBrief } from './game/onboarding.js';
 import { createFirstMinuteFunnel } from './game/funnel.js';
+import { createAdInventoryItems } from './game/ad-inventory.js';
 import {
   AD_PLACEMENTS,
   activateDailyBuff,
@@ -379,28 +380,26 @@ function renderEvent() {
 
 function renderAds() {
   const recommendedAd = createFirstMinuteFunnel(state, adContext()).primaryAd?.id;
+  const inventoryItems = createAdInventoryItems(state, adContext(), { featuredAdId: recommendedAd });
   return `
     <section class="panel">
       <h2>广告库存</h2>
-      <p class="panel-note">左侧只推一个最该看的广告，这里保留完整 30 秒激励视频库存。</p>
+      <p class="panel-note">左侧只推一个最该看的模拟 30 秒激励视频，这里保留完整库存。</p>
       <div class="ad-placement-list">
-        ${AD_PLACEMENTS
-          .filter((placement) => placement.id !== 'revive' && placement.id !== 'skipCrisis')
-          .map((placement) => renderAdPlacement(placement, placement.id === recommendedAd))
-          .join('')}
+        ${inventoryItems.map(renderAdPlacement).join('')}
       </div>
     </section>
   `;
 }
 
-function renderAdPlacement(placement, recommended = false) {
-  const availability = canUseRewardedAd(state, placement.id, adContext());
-  const watched = state.metrics?.adPlacements?.[placement.id] || 0;
+function renderAdPlacement(item) {
+  const dataAttr = item.actionable ? `data-ad="${escapeHtml(item.id)}"` : '';
+  const disabled = item.actionable ? '' : 'disabled';
   return `
-    <button class="ad-placement ${availability.ok ? 'available' : 'locked'} ${recommended ? 'recommended' : ''}" data-ad="${escapeHtml(placement.id)}" ${availability.ok ? '' : 'disabled'}>
-      <span class="ad-placement-kicker">${escapeHtml(placement.title)} · 已看 ${watched} 次${recommended ? ' · 左侧推荐' : ''}</span>
-      <strong>${escapeHtml(placement.buttonText)}</strong>
-      <small>${escapeHtml(availability.ok ? placement.reward : availability.reason)}</small>
+    <button class="ad-placement ${item.available ? 'available' : 'locked'} ${item.featured ? 'recommended' : ''}" ${dataAttr} ${disabled}>
+      <span class="ad-placement-kicker">${escapeHtml(item.title)} · 已看 ${item.watched} 次${item.featured ? ' · 左侧推荐中' : ''}</span>
+      <strong>${escapeHtml(item.featured ? '左侧已推荐' : item.buttonText)}</strong>
+      <small>${escapeHtml(item.statusText)}</small>
     </button>
   `;
 }
@@ -533,7 +532,7 @@ function renderAdOverlay() {
         <h2>${escapeHtml(placement?.title || '激励视频')}</h2>
         <p>${escapeHtml(placement?.reward || '奖励结算中')}</p>
         <div class="ad-progress"><i></i></div>
-        <small>模拟 30 秒广告播放中，马上回到工位。</small>
+        <small>开发版快速模拟 30 秒广告，马上回到工位。</small>
       </section>
     </div>
   `;
