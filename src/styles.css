@@ -519,7 +519,7 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
 }
 
 .panel-title-row span {
@@ -549,7 +549,52 @@ button:disabled {
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
+  gap: 8px;
+}
+
+.office-intel-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.office-intel-strip span {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(31, 41, 51, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(31, 41, 51, 0.035) 1px, transparent 1px) 0 0 / 12px 12px,
+    rgba(255, 255, 255, 0.68);
+  color: var(--ink);
+  padding: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.office-intel-strip b {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.office-intel-strip .danger {
+  border-color: rgba(180, 35, 24, 0.26);
+  color: var(--risk);
+}
+
+.office-intel-strip .warning {
+  border-color: rgba(200, 135, 25, 0.3);
+  color: #8a5d0a;
+}
+
+.office-intel-strip .safe {
+  border-color: rgba(23, 107, 93, 0.24);
+  color: var(--accent);
 }
 
 .action-button,
@@ -570,7 +615,7 @@ button:disabled {
 }
 
 .action-button {
-  min-height: 78px;
+  min-height: 68px;
   overflow: hidden;
   border-color: rgba(31, 41, 51, 0.14);
   background: rgba(255, 255, 255, 0.9);
@@ -981,6 +1026,28 @@ button:disabled {
   margin: 0 0 12px;
 }
 
+.work-title-proof {
+  display: grid;
+  gap: 3px;
+  margin: 0 0 12px;
+  border: 1px dashed rgba(23, 107, 93, 0.34);
+  border-radius: 8px;
+  background: rgba(223, 244, 235, 0.58);
+  padding: 10px;
+}
+
+.work-title-proof span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.work-title-proof strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.15;
+}
+
 .poster-code {
   display: block;
   margin-top: 12px;
@@ -1194,7 +1261,7 @@ button:disabled {
   }
 
   .action-button {
-    min-height: 72px;
+    min-height: 60px;
     padding: 8px;
   }
 

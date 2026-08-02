@@ -12,6 +12,7 @@ import { createOnboardingBrief } from './game/onboarding.js';
 import { createFirstMinuteFunnel } from './game/funnel.js';
 import { createAdInventoryItems } from './game/ad-inventory.js';
 import { PUBLIC_PLAY_URL, createLaunchShareText, getLaunchNotes } from './game/launch.js';
+import { getBlameRank, getTeaRoomRumor, getWorkTitle } from './game/flavor.js';
 import {
   AD_PLACEMENTS,
   activateDailyBuff,
@@ -293,11 +294,17 @@ function renderFeedback() {
 function renderActions() {
   const disabled = state.energy <= 0 || Boolean(modal);
   const actionHint = disabled ? '处理公司事件后进入下一天' : '点一次扣 1 点，用完触发公司事件';
+  const blameRank = getBlameRank(state);
   return `
     <section class="panel ability-panel" aria-label="今日行动">
       <div class="panel-title-row">
         <h2>今日行动 <span class="inline-energy">${state.energy}/3</span></h2>
         <span>${actionHint}</span>
+      </div>
+      <div class="office-intel-strip" aria-label="办公室情报">
+        <span><b>茶水间</b>${escapeHtml(getTeaRoomRumor(state))}</span>
+        <span class="${escapeHtml(blameRank.tone)}"><b>背锅名单</b>第 ${blameRank.rank} 名 · ${escapeHtml(blameRank.label)}</span>
+        <span><b>工位称号</b>${escapeHtml(getWorkTitle(state))}</span>
       </div>
       <div class="actions-grid">
         ${ACTION_DEFS.map((action) => `
@@ -746,6 +753,10 @@ function renderShareCard(report) {
       <p class="tier-line">${escapeHtml(report.survivalTier)} · ${escapeHtml(report.endingDescription)}</p>
       <div class="share-badges">
         ${report.shareBadges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join('')}
+      </div>
+      <div class="work-title-proof">
+        <span>工位称号</span>
+        <strong>${escapeHtml(getWorkTitle(state))}</strong>
       </div>
       <div class="share-grid">
         <span><strong>${report.daysSurvived}</strong><small>存活天数</small></span>

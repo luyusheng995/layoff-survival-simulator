@@ -707,6 +707,27 @@ test('intranet notice and survival certificate polish the theme', () => {
   assert.ok(smoke.includes('员工编号'));
 });
 
+test('office intel adds rumor blame ranking and work title hooks', async () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  const flavor = await import('../src/game/flavor.js');
+  const { createInitialState } = await import('../src/game/state.js');
+  const state = createInitialState();
+  assert.equal(typeof flavor.getTeaRoomRumor(state), 'string');
+  assert.ok(flavor.getBlameRank(state).rank >= 1);
+  assert.ok(flavor.getWorkTitle(state).length > 0);
+  assert.ok(main.includes('office-intel-strip'));
+  assert.ok(main.includes('getTeaRoomRumor'));
+  assert.ok(main.includes('getBlameRank'));
+  assert.ok(main.includes('getWorkTitle'));
+  assert.ok(styles.includes('.office-intel-strip'));
+  assert.ok(styles.includes('.work-title-proof'));
+  assert.ok(smoke.includes('茶水间传闻'));
+  assert.ok(smoke.includes('背锅名单'));
+  assert.ok(smoke.includes('工位称号'));
+});
+
 test('index versions runtime assets for public cache busting', () => {
   const index = readFileSync('index.html', 'utf8');
   assert.ok(index.includes('./src/styles.css?v='));
