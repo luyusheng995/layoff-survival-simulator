@@ -110,6 +110,7 @@ async function runViewportSmoke(debugPort, viewport) {
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
     checks.push(await textCheck(client, '工位档案', '工位档案'));
+    checks.push(await textCheck(client, '存款总数', '存款 ¥5,000'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
     checks.push(await textCheck(client, '行动区', '今日行动'));
     checks.push(await textCheck(client, '行动说明', '点一次扣 1 点'));

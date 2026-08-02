@@ -670,6 +670,16 @@ test('mobile header reserves avatar slot and moves week clock right', () => {
   assert.ok(smoke.includes('头像在左周次在右'));
 });
 
+test('mobile header shows savings total beside launch link', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(main.includes('balance-chip'));
+  assert.ok(main.includes('存款 ${money(state.stats.savings)}'));
+  assert.ok(styles.includes('.header-actions'));
+  assert.ok(smoke.includes('存款总数'));
+});
+
 test('pages package manifest contains runtime static assets only', async () => {
   const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
   const manifest = createPagesPackageManifest();

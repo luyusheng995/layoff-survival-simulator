@@ -145,7 +145,7 @@ button:disabled {
   gap: 4px 10px;
 }
 
-.work-brief span {
+.work-brief .work-kicker {
   grid-column: 1 / -1;
   color: var(--risk);
   font-size: 12px;
@@ -166,8 +166,17 @@ button:disabled {
   font-weight: 700;
 }
 
+.header-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
 .status-pills span,
 .status-copy-button,
+.balance-chip,
 .day-pill,
 .event-type,
 .feedback-chips b,
@@ -193,6 +202,10 @@ button:disabled {
   min-height: auto;
   border-color: rgba(180, 35, 24, 0.28);
   color: var(--risk);
+}
+
+.balance-chip {
+  color: var(--accent);
 }
 
 .dashboard-home {
@@ -1036,6 +1049,10 @@ button:disabled {
     gap: 3px;
   }
 
+  .header-actions {
+    gap: 5px;
+  }
+
   .work-brief strong {
     font-size: 16px;
   }
@@ -1044,7 +1061,8 @@ button:disabled {
     font-size: 11px;
   }
 
-  .status-copy-button {
+  .status-copy-button,
+  .balance-chip {
     justify-self: start;
     padding: 6px 8px;
     font-size: 12px;

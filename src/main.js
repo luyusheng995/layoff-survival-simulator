@@ -491,10 +491,13 @@ function renderMobileStatus() {
         <span>企</span>
       </div>
       <div class="work-brief" aria-label="工位档案">
-        <span>工位档案</span>
+        <span class="work-kicker">工位档案</span>
         <strong>大厂裁员生存模拟器</strong>
         <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
-        <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+        <div class="header-actions">
+          <span class="balance-chip">存款 ${money(state.stats.savings)}</span>
+          <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+        </div>
       </div>
       <div class="week-clock">
         <strong>第 ${Math.ceil(state.day / 7)} 周</strong>
