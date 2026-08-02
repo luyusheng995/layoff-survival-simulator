@@ -158,9 +158,9 @@ async function runViewportSmoke(debugPort, viewport) {
     ));
     checks.push(await expressionCheck(
       client,
-      '标题居中且更宽',
-      '(() => { const header = document.querySelector(".mobile-status")?.getBoundingClientRect(); const avatar = document.querySelector(".account-avatar")?.getBoundingClientRect(); const brief = document.querySelector(".work-brief")?.getBoundingClientRect(); const title = document.querySelector(".work-brief strong"); return Boolean(header && avatar && brief && title && avatar.left - header.left <= 48 && brief.width >= 205 && getComputedStyle(title).textAlign === "center"); })()',
-      '头像靠左一点，标题档案区域更宽，游戏名在信息区居中'
+      '档案信息整体居中且更宽',
+      '(() => { const header = document.querySelector(".mobile-status")?.getBoundingClientRect(); const avatar = document.querySelector(".account-avatar")?.getBoundingClientRect(); const brief = document.querySelector(".work-brief")?.getBoundingClientRect(); const kicker = document.querySelector(".work-brief .work-kicker"); const title = document.querySelector(".work-brief strong"); const meta = document.querySelector(".work-brief small"); const actions = document.querySelector(".header-actions"); return Boolean(header && avatar && brief && kicker && title && meta && actions && avatar.left - header.left <= 48 && brief.width >= 205 && getComputedStyle(kicker).textAlign === "center" && getComputedStyle(title).textAlign === "center" && getComputedStyle(meta).textAlign === "center" && getComputedStyle(actions).justifyContent === "center"); })()',
+      '工位档案、游戏名、员工说明、存款和链接都在档案区域居中'
     ));
     checks.push(await expressionCheck(
       client,

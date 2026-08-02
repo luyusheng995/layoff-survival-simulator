@@ -149,15 +149,18 @@ button:disabled {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
+  align-items: center;
+  justify-items: center;
   gap: 4px 8px;
 }
 
 .work-brief .work-kicker {
   grid-column: 1 / -1;
+  width: 100%;
   color: var(--risk);
   font-size: 12px;
   font-weight: 1000;
+  text-align: center;
 }
 
 .work-brief strong {
@@ -172,9 +175,11 @@ button:disabled {
 
 .work-brief small {
   grid-column: 1 / -1;
+  width: 100%;
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
+  text-align: center;
 }
 
 .header-actions {
@@ -182,6 +187,7 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 7px;
 }
 
@@ -1079,7 +1085,6 @@ button:disabled {
 
   .status-copy-button,
   .balance-chip {
-    justify-self: start;
     padding: 6px 8px;
     font-size: 12px;
   }

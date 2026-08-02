@@ -672,11 +672,12 @@ test('mobile header reserves avatar slot and moves week clock right', () => {
   assert.ok(styles.includes('grid-template-columns: 62px minmax(0, 1fr);'));
   assert.ok(styles.includes('grid-template-columns: minmax(0, 1fr) 54px;'));
   assert.ok(styles.includes('text-align: center;'));
+  assert.ok(styles.includes('justify-content: center;'));
   assert.equal(styles.includes('grid-template-columns: 64px minmax(0, max-content);'), false);
   assert.ok(styles.includes('.account-avatar'));
   assert.ok(smoke.includes('头像在左周次在右'));
   assert.ok(smoke.includes('顶部内容分布均衡'));
-  assert.ok(smoke.includes('标题居中且更宽'));
+  assert.ok(smoke.includes('档案信息整体居中且更宽'));
 });
 
 test('mobile header shows savings total beside launch link', () => {
