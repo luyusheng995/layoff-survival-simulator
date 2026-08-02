@@ -32,7 +32,8 @@ import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playte
 import {
   createBrowserSmokeMarkdown,
   createBrowserSmokeReport,
-  createGameplayEventTypeCheckExpression
+  createGameplayEventTypeCheckExpression,
+  shouldStartLocalSmokeServer
 } from '../src/game/browser-smoke-report.js';
 import { createAdInventoryItems } from '../src/game/ad-inventory.js';
 
@@ -541,6 +542,12 @@ test('browser smoke accepts any gameplay event type after actions resolve', () =
     });
     assert.equal(matched, true, eventTypeText);
   }
+});
+
+test('browser smoke starts the helper server only for local targets', () => {
+  assert.equal(shouldStartLocalSmokeServer('http://127.0.0.1:4173/'), true);
+  assert.equal(shouldStartLocalSmokeServer('http://localhost:4173/'), true);
+  assert.equal(shouldStartLocalSmokeServer('https://luyusheng995.github.io/layoff-survival-simulator/'), false);
 });
 
 test('ad inventory marks the featured recommendation as non-actionable', () => {

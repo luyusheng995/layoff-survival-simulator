@@ -1,8 +1,8 @@
 # M17 浏览器级 Smoke 报告
 
 整体状态：PASS
-测试地址：http://127.0.0.1:4173/
-生成时间：2026-08-02T00:25:44.601Z
+测试地址：https://luyusheng995.github.io/layoff-survival-simulator/
+生成时间：2026-08-02T01:13:02.369Z
 检查项：18/18 通过
 控制台错误：0
 

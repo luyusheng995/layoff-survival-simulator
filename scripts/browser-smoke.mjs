@@ -7,7 +7,8 @@ import { createServer } from 'node:net';
 import {
   createBrowserSmokeMarkdown,
   createBrowserSmokeReport,
-  createGameplayEventTypeCheckExpression
+  createGameplayEventTypeCheckExpression,
+  shouldStartLocalSmokeServer
 } from '../src/game/browser-smoke-report.js';
 
 const root = new URL('../', import.meta.url);
@@ -29,7 +30,7 @@ async function main() {
   await mkdir(screenshotDir, { recursive: true });
 
   let serverProcess = null;
-  if (!(await isReachable(appUrl))) {
+  if (shouldStartLocalSmokeServer(appUrl) && !(await isReachable(appUrl))) {
     serverProcess = spawn(process.execPath, ['scripts/server.mjs'], {
       cwd: new URL('../', import.meta.url),
       stdio: 'ignore',

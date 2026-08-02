@@ -4,6 +4,11 @@ export function createGameplayEventTypeCheckExpression() {
   return `document.body && ${JSON.stringify(GAMEPLAY_EVENT_TYPE_TEXTS)}.some((text) => document.body.innerText.includes(text))`;
 }
 
+export function shouldStartLocalSmokeServer(url) {
+  const hostname = new URL(url).hostname;
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+}
+
 export function createBrowserSmokeReport(results, options = {}) {
   const normalized = results.map((result) => {
     const checks = result.checks || [];
