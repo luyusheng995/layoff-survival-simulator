@@ -74,8 +74,8 @@ button:disabled {
 .mobile-status {
   min-height: 124px;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) 78px;
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) 72px;
+  gap: 12px;
   align-items: center;
   border: 2px solid rgba(31, 41, 51, 0.11);
   border-radius: 22px;
@@ -83,7 +83,16 @@ button:disabled {
     linear-gradient(90deg, rgba(31, 41, 51, 0.045) 1px, transparent 1px) 0 0 / 18px 18px,
     rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
-  padding: 14px;
+  padding: 14px 16px 14px 18px;
+}
+
+.identity-cluster {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, max-content);
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
 .account-avatar {
@@ -1019,14 +1028,19 @@ button:disabled {
 
   .mobile-status {
     min-height: 112px;
-    grid-template-columns: 56px minmax(0, 1fr) 66px;
+    grid-template-columns: minmax(0, 1fr) 62px;
     gap: 8px;
-    padding: 11px;
+    padding: 11px 12px 11px 14px;
+  }
+
+  .identity-cluster {
+    grid-template-columns: 52px minmax(0, max-content);
+    gap: 9px;
   }
 
   .account-avatar {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 18px;
   }
 

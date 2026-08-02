@@ -487,16 +487,18 @@ function clampPercent(value, max = 100) {
 function renderMobileStatus() {
   return `
     <header class="mobile-status">
-      <div class="account-avatar" aria-label="账号头像">
-        <span>企</span>
-      </div>
-      <div class="work-brief" aria-label="工位档案">
-        <span class="work-kicker">工位档案</span>
-        <strong>大厂裁员生存模拟器</strong>
-        <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
-        <div class="header-actions">
-          <span class="balance-chip">存款 ${money(state.stats.savings)}</span>
-          <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+      <div class="identity-cluster">
+        <div class="account-avatar" aria-label="账号头像">
+          <span>企</span>
+        </div>
+        <div class="work-brief" aria-label="工位档案">
+          <span class="work-kicker">工位档案</span>
+          <strong>大厂裁员生存模拟器</strong>
+          <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
+          <div class="header-actions">
+            <span class="balance-chip">存款 ${money(state.stats.savings)}</span>
+            <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+          </div>
         </div>
       </div>
       <div class="week-clock">

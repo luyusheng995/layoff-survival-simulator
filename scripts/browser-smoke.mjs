@@ -152,6 +152,12 @@ async function runViewportSmoke(debugPort, viewport) {
     ));
     checks.push(await expressionCheck(
       client,
+      '顶部内容分布均衡',
+      '(() => { const header = document.querySelector(".mobile-status")?.getBoundingClientRect(); const cluster = document.querySelector(".identity-cluster")?.getBoundingClientRect(); const clock = document.querySelector(".week-clock")?.getBoundingClientRect(); return Boolean(header && cluster && clock && cluster.left - header.left >= 12 && clock.left - cluster.right <= 20 && header.right - clock.right >= 8); })()',
+      '头像和标题组成账号区，右侧时间旁没有大段空白'
+    ));
+    checks.push(await expressionCheck(
+      client,
       '首页不抢推广告',
       'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 0',
       '每日 Buff 已移到补给页'
