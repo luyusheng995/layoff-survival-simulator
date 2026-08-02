@@ -13,9 +13,7 @@ import { createFirstMinuteFunnel } from './game/funnel.js';
 import { createAdInventoryItems } from './game/ad-inventory.js';
 import { PUBLIC_PLAY_URL, createLaunchShareText, getLaunchNotes } from './game/launch.js';
 import {
-  getBlameRank,
   getBossGaze,
-  getLayoffWind,
   getMomentsCopy,
   getTeaRoomRumor,
   getWeChatNudge,
@@ -302,9 +300,7 @@ function renderFeedback() {
 function renderActions() {
   const disabled = state.energy <= 0 || Boolean(modal);
   const actionHint = disabled ? '处理公司事件后进入下一天' : '点一次扣 1 点，用完触发公司事件';
-  const blameRank = getBlameRank(state);
   const bossGaze = getBossGaze(state);
-  const layoffWind = getLayoffWind(state);
   return `
     <section class="panel ability-panel" aria-label="今日行动">
       <div class="panel-title-row">
@@ -313,8 +309,6 @@ function renderActions() {
       </div>
       <div class="office-intel-strip" aria-label="办公室情报">
         <span><b>茶水间</b>${escapeHtml(getTeaRoomRumor(state))}</span>
-        <span class="${escapeHtml(blameRank.tone)}"><b>背锅名单</b>第 ${blameRank.rank} 名 · ${escapeHtml(blameRank.label)}</span>
-        <span class="${escapeHtml(layoffWind.tone)}"><b>裁员风向</b>${escapeHtml(layoffWind.label)} · ${escapeHtml(layoffWind.detail)}</span>
         <span class="${escapeHtml(bossGaze.tone)}"><b>老板凝视 ${bossGaze.value}%</b>${escapeHtml(bossGaze.line)}</span>
         <span><b>工位称号</b>${escapeHtml(getWorkTitle(state))}</span>
       </div>

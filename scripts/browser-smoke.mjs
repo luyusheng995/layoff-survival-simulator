@@ -116,10 +116,8 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await textCheck(client, '行动区', '今日行动'));
     checks.push(await textCheck(client, '行动说明', '点一次扣 1 点'));
     checks.push(await textCheck(client, '茶水间传闻', '茶水间'));
-    checks.push(await textCheck(client, '背锅名单', '背锅名单'));
     checks.push(await textCheck(client, '工位称号', '工位称号'));
     checks.push(await textCheck(client, '老板凝视值', '老板凝视'));
-    checks.push(await textCheck(client, '裁员风向榜', '裁员风向'));
     checks.push(await expressionCheck(
       client,
       '无横向溢出',

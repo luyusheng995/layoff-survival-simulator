@@ -710,7 +710,7 @@ test('intranet notice and survival certificate polish the theme', () => {
   assert.ok(smoke.includes('员工编号'));
 });
 
-test('office intel adds rumor blame ranking and work title hooks', async () => {
+test('office intel adds rumor gaze and work title hooks', async () => {
   const main = readFileSync('src/main.js', 'utf8');
   const styles = readFileSync('src/styles.css', 'utf8');
   const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
@@ -718,29 +718,25 @@ test('office intel adds rumor blame ranking and work title hooks', async () => {
   const { createInitialState } = await import('../src/game/state.js');
   const state = createInitialState();
   assert.equal(typeof flavor.getTeaRoomRumor(state), 'string');
-  assert.ok(flavor.getBlameRank(state).rank >= 1);
   assert.ok(flavor.getWorkTitle(state).length > 0);
   assert.ok(flavor.getBossGaze(state).value >= 0);
-  assert.ok(flavor.getLayoffWind(state).label.length > 0);
   assert.ok(flavor.getWeChatNudge(state).includes('企业微信'));
   assert.ok(flavor.getMomentsCopy(state, '继续上班').includes('朋友圈') === false);
   assert.ok(main.includes('office-intel-strip'));
   assert.ok(main.includes('getTeaRoomRumor'));
-  assert.ok(main.includes('getBlameRank'));
   assert.ok(main.includes('getWorkTitle'));
   assert.ok(main.includes('getBossGaze'));
-  assert.ok(main.includes('getLayoffWind'));
   assert.ok(main.includes('getWeChatNudge'));
   assert.ok(main.includes('getMomentsCopy'));
+  assert.equal(main.includes('背锅名单'), false);
+  assert.equal(main.includes('裁员风向'), false);
   assert.ok(styles.includes('.office-intel-strip'));
   assert.ok(styles.includes('.work-title-proof'));
   assert.ok(styles.includes('.wechat-nudge'));
   assert.ok(styles.includes('.moments-copy'));
   assert.ok(smoke.includes('茶水间传闻'));
-  assert.ok(smoke.includes('背锅名单'));
   assert.ok(smoke.includes('工位称号'));
   assert.ok(smoke.includes('老板凝视值'));
-  assert.ok(smoke.includes('裁员风向榜'));
   assert.ok(smoke.includes('摸鱼彩蛋'));
   assert.ok(smoke.includes('企业微信气泡'));
 });

@@ -21,18 +21,6 @@ export function getTeaRoomRumor(state) {
   return TEA_ROOM_RUMORS[Math.abs(seed) % TEA_ROOM_RUMORS.length];
 }
 
-export function getBlameRank(state) {
-  const riskScore = state.hidden.landmine
-    + Math.max(0, 55 - state.stats.performance) * 0.45
-    + Math.max(0, 50 - state.stats.dignity) * 0.25
-    - Math.max(0, state.stats.savings - 10000) / 6000;
-  const rank = Math.max(1, Math.min(12, 12 - Math.floor(riskScore / 9)));
-
-  if (rank <= 2) return { rank, label: '高危', tone: 'danger' };
-  if (rank <= 5) return { rank, label: '靠前', tone: 'warning' };
-  return { rank, label: '暂稳', tone: 'safe' };
-}
-
 export function getWorkTitle(state) {
   if (state.revivesUsed > 0) return '广告续命型人才';
   if (state.stats.savings >= 50000) return '现金流避险家';
@@ -59,14 +47,6 @@ export function getBossGaze(state) {
     return { value, label: '扫到你', tone: 'warning', line: '老板看了你 0.8 秒。' };
   }
   return { value, label: '未对焦', tone: 'safe', line: '老板今天还没想起你。' };
-}
-
-export function getLayoffWind(state) {
-  const pressure = state.day * 0.58 + state.hidden.landmine * 0.42 + Math.max(0, 55 - state.stats.performance) * 0.18;
-  if (pressure >= 82) return { label: '全员自危', tone: 'danger', detail: '名单正在流转' };
-  if (pressure >= 58) return { label: '名单流转', tone: 'warning', detail: '有人开始对齐口径' };
-  if (pressure >= 36) return { label: '有风声', tone: 'watch', detail: '茶水间音量下降' };
-  return { label: '平稳', tone: 'safe', detail: '暂未闻到 HR 香水味' };
 }
 
 export function getWeChatNudge(state, eventType = 'daily') {
