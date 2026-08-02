@@ -650,6 +650,15 @@ test('home dashboard teaches the daily energy operation loop', () => {
   assert.equal(smoke.includes('消耗 1 精力'), false);
 });
 
+test('home action cards keep stat effects visible', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(main.includes('formatEffects(action.effects)'));
+  assert.equal(styles.includes('.action-button .action-effect:last-child'), false);
+  assert.ok(smoke.includes('行动属性可见'));
+});
+
 test('pages package manifest contains runtime static assets only', async () => {
   const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
   const manifest = createPagesPackageManifest();

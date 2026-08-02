@@ -509,10 +509,6 @@ button:disabled {
   line-height: 1.3;
 }
 
-.action-button .action-effect:last-child {
-  display: none;
-}
-
 .growth-strip {
   min-height: 0;
   display: grid;

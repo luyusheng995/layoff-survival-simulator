@@ -139,6 +139,12 @@ async function runViewportSmoke(debugPort, viewport) {
     ));
     checks.push(await expressionCheck(
       client,
+      '行动属性可见',
+      'Array.from(document.querySelectorAll("[data-action]")).every((button) => /[+-]\\d/.test(button.innerText))',
+      '每张行动卡展示加减属性'
+    ));
+    checks.push(await expressionCheck(
+      client,
       '首页不抢推广告',
       'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 0',
       '每日 Buff 已移到补给页'
