@@ -613,8 +613,8 @@ test('browser smoke enforces the single screen mobile dashboard contract', () =>
   assert.ok(script.includes('移动端无上下滚动'));
   assert.ok(script.includes('document.documentElement.scrollHeight <= window.innerHeight + 1'));
   assert.ok(script.includes('工位档案'));
-  assert.ok(script.includes('当前任务'));
-  assert.ok(script.includes('能力面板'));
+  assert.ok(script.includes('今日精力'));
+  assert.ok(script.includes('今日行动'));
   assert.ok(script.includes('data-tab="home"'));
 });
 
@@ -630,6 +630,18 @@ test('mobile dashboard copy and palette match the layoff survival theme', () => 
   assert.ok(main.includes('策略'));
   assert.ok(main.includes('补给'));
   assert.ok(main.includes('记录'));
+});
+
+test('home dashboard teaches the daily energy operation loop', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(main.includes('今日精力'));
+  assert.ok(main.includes('消耗 1 精力'));
+  assert.ok(main.includes('精力用完'));
+  assert.ok(main.includes('energy-dot'));
+  assert.equal(main.includes('<h2>能力面板</h2>'), false);
+  assert.ok(smoke.includes('今日精力'));
+  assert.ok(smoke.includes('消耗 1 精力'));
 });
 
 test('pages package manifest contains runtime static assets only', async () => {

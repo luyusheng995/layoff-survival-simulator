@@ -280,14 +280,15 @@ function renderFeedback() {
 function renderActions() {
   const disabled = state.energy <= 0 || Boolean(modal);
   return `
-    <section class="panel ability-panel">
+    <section class="panel ability-panel" aria-label="今日行动">
       <div class="panel-title-row">
-        <h2>能力面板</h2>
-        <span>今日精力分配</span>
+        <h2>今日行动</h2>
+        <span>每次消耗 1 精力</span>
       </div>
       <div class="actions-grid">
         ${ACTION_DEFS.map((action) => `
           <button class="action-button" data-action="${escapeHtml(action.id)}" ${disabled ? 'disabled' : ''}>
+            <span class="action-cost">消耗 1 精力</span>
             <span class="action-title">${escapeHtml(action.label)}</span>
             <span class="action-effect">${escapeHtml(formatEffects(action.effects))}</span>
             <span class="action-effect">${escapeHtml(action.hint)}</span>
@@ -493,12 +494,28 @@ function renderMobileStatus() {
       </div>
       <div class="status-pills" aria-label="当前状态">
         <span>资金 ${money(state.stats.savings).replace('¥', '')}</span>
-        <span>绩效 ${state.stats.performance}</span>
-        <span>行动 ${state.energy}/3</span>
+        <span>裁员风险 ${riskText()}</span>
         <span class="health-pill">尊严 ${state.stats.dignity}/100</span>
         <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
       </div>
     </header>
+  `;
+}
+
+function renderSurvivalSummary() {
+  return `
+    <section class="survival-summary" aria-label="工位档案">
+      <div>
+        <span>工位档案</span>
+        <strong>大厂裁员生存模拟器</strong>
+        <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
+      </div>
+      <dl>
+        <span><dt>绩效</dt><dd>${state.stats.performance}</dd></span>
+        <span><dt>发量</dt><dd>${state.stats.hair}</dd></span>
+        <span><dt>存款</dt><dd>${money(state.stats.savings)}</dd></span>
+      </dl>
+    </section>
   `;
 }
 
@@ -530,6 +547,30 @@ function renderCharacterCard() {
           </span>
         `).join('')}
       </div>
+    </section>
+  `;
+}
+
+function renderEnergyGuide() {
+  const dots = Array.from({ length: 3 }, (_, index) => index < state.energy);
+  const guide = activeEvent
+    ? '精力用完，公司事件已出现。选择一个处理方式，结算后进入下一天。'
+    : '点击一个行动，消耗 1 精力。精力用完后，公司事件会自动出现。';
+
+  return `
+    <section class="energy-guide" aria-label="今日精力">
+      <div class="energy-guide-head">
+        <div>
+          <span>今日精力</span>
+          <strong>${state.energy}/3</strong>
+        </div>
+        <div class="energy-dots" aria-label="剩余精力">
+          ${dots.map((available, index) => `
+            <i class="energy-dot ${available ? 'available' : 'spent'}" aria-label="第 ${index + 1} 点精力"></i>
+          `).join('')}
+        </div>
+      </div>
+      <p>${guide}</p>
     </section>
   `;
 }
@@ -632,19 +673,28 @@ function renderAbilityBars() {
 function renderHomeTab() {
   return `
     <main class="dashboard-home ${activeEvent ? 'event-mode' : ''}">
-      ${renderCharacterCard()}
-      ${renderMobileMission()}
-      ${activeEvent ? '' : renderActions()}
+      ${renderSurvivalSummary()}
+      ${renderEnergyGuide()}
+      ${activeEvent ? renderMobileMission() : renderActions()}
       ${renderAbilityBars()}
     </main>
   `;
 }
 
+function renderTabHeader(title, detail) {
+  return `
+    <header class="tab-page-header">
+      <span>${escapeHtml(title)}</span>
+      <p>${escapeHtml(detail)}</p>
+    </header>
+  `;
+}
+
 function renderSecondaryTabPanel() {
   const panels = {
-    strategy: `${renderDifficultyPanel()}${renderTalentPanel()}`,
-    resources: `${renderAds()}${renderLaunchStrip()}`,
-    records: `${renderLogs()}${renderEndingGallery()}${renderLaunchNotes()}${renderFeedback()}`
+    strategy: `${renderTabHeader('策略', '调整难度和初始天赋，下一局开局时生效。')}${renderDifficultyPanel()}${renderTalentPanel()}`,
+    resources: `${renderTabHeader('补给', '广告奖励是可选续命手段，不影响基础操作。')}${renderAds()}${renderLaunchStrip()}`,
+    records: `${renderTabHeader('记录', '查看最近工位小票、已解锁结局和上线记录。')}${renderLogs()}${renderEndingGallery()}${renderLaunchNotes()}${renderFeedback()}`
   };
 
   return `

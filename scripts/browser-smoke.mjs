@@ -110,10 +110,10 @@ async function runViewportSmoke(debugPort, viewport) {
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
     checks.push(await textCheck(client, '工位档案', '工位档案'));
-    checks.push(await textCheck(client, '当前任务卡', '当前任务'));
-    checks.push(await textCheck(client, '能力面板', '能力面板'));
+    checks.push(await textCheck(client, '今日精力', '今日精力'));
+    checks.push(await textCheck(client, '操作说明', '消耗 1 精力'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
-    checks.push(await textCheck(client, '行动区', '今日精力分配'));
+    checks.push(await textCheck(client, '行动区', '今日行动'));
     checks.push(await expressionCheck(
       client,
       '无横向溢出',
@@ -135,14 +135,14 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await expressionCheck(
       client,
       '主要按钮可点击',
-      'Boolean(document.querySelector("[data-ad=\\"dailyBuff\\"]")) && document.querySelectorAll("[data-action]").length >= 5',
-      '推荐广告按钮与 5 个行动按钮存在'
+      'document.querySelectorAll("[data-action]").length >= 5 && Array.from(document.querySelectorAll("[data-action]")).every((button) => button.innerText.includes("消耗 1 精力"))',
+      '5 个行动按钮存在且说明消耗 1 精力'
     ));
     checks.push(await expressionCheck(
       client,
-      '推荐广告入口不重复',
-      'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 1',
-      '每日 Buff 只有一个可点击 CTA'
+      '首页不抢推广告',
+      'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 0',
+      '每日 Buff 已移到补给页'
     ));
     checks.push(await expressionCheck(
       client,
@@ -153,8 +153,6 @@ async function runViewportSmoke(debugPort, viewport) {
 
     await client.evaluate(`
       (async () => {
-        document.querySelector('[data-ad="dailyBuff"]').click();
-        await new Promise((resolve) => setTimeout(resolve, 700));
         for (const id of ['slack_off', 'overtime', 'side_hustle']) {
           document.querySelector('[data-action="' + id + '"]').click();
           await new Promise((resolve) => setTimeout(resolve, 80));
@@ -163,7 +161,7 @@ async function runViewportSmoke(debugPort, viewport) {
     `);
     await sleep(300);
 
-    checks.push(await textCheck(client, '广告奖励结算', '今日 Buff'));
+    checks.push(await textCheck(client, '精力用完提示', '精力用完'));
     checks.push(await expressionCheck(
       client,
       '首个事件出现',
