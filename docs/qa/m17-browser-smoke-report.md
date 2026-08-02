@@ -2,7 +2,7 @@
 
 整体状态：PASS
 测试地址：https://luyusheng995.github.io/layoff-survival-simulator/
-生成时间：2026-08-02T05:49:01.034Z
+生成时间：2026-08-02T05:53:01.354Z
 检查项：28/28 通过
 控制台错误：0
 
