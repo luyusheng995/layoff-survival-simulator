@@ -431,6 +431,35 @@ button:disabled {
   font-weight: 900;
 }
 
+.wechat-nudge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 10px;
+}
+
+.wechat-nudge b {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(223, 255, 234, 0.92);
+  color: #087653;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.wechat-nudge span {
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .mission-card p {
   margin: 8px 0 0;
   color: rgba(255, 255, 255, 0.72);
@@ -590,6 +619,11 @@ button:disabled {
 .office-intel-strip .warning {
   border-color: rgba(200, 135, 25, 0.3);
   color: #8a5d0a;
+}
+
+.office-intel-strip .watch {
+  border-color: rgba(37, 99, 235, 0.22);
+  color: var(--sky);
 }
 
 .office-intel-strip .safe {
@@ -1048,6 +1082,28 @@ button:disabled {
   line-height: 1.15;
 }
 
+.moments-copy {
+  margin: 0 0 12px;
+  border: 1px solid rgba(31, 41, 51, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 10px;
+}
+
+.moments-copy span {
+  display: block;
+  color: var(--risk);
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.moments-copy p {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .poster-code {
   display: block;
   margin-top: 12px;
@@ -1261,8 +1317,8 @@ button:disabled {
   }
 
   .action-button {
-    min-height: 60px;
-    padding: 8px;
+    min-height: 54px;
+    padding: 7px;
   }
 
   .action-title {

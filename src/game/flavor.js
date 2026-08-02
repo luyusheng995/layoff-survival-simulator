@@ -43,3 +43,42 @@ export function getWorkTitle(state) {
   if (state.metrics?.actionsTaken >= 18) return '会议隐身术士';
   return '普通牛马观察员';
 }
+
+export function getBossGaze(state) {
+  const value = Math.max(0, Math.min(100, Math.round(
+    12
+    + state.hidden.landmine * 0.58
+    + Math.max(0, 65 - state.stats.performance) * 0.22
+    + (state.day % 5) * 3
+  )));
+
+  if (value >= 75) {
+    return { value, label: '盯上了', tone: 'danger', line: '老板看了你 3.2 秒。' };
+  }
+  if (value >= 45) {
+    return { value, label: '扫到你', tone: 'warning', line: '老板看了你 0.8 秒。' };
+  }
+  return { value, label: '未对焦', tone: 'safe', line: '老板今天还没想起你。' };
+}
+
+export function getLayoffWind(state) {
+  const pressure = state.day * 0.58 + state.hidden.landmine * 0.42 + Math.max(0, 55 - state.stats.performance) * 0.18;
+  if (pressure >= 82) return { label: '全员自危', tone: 'danger', detail: '名单正在流转' };
+  if (pressure >= 58) return { label: '名单流转', tone: 'warning', detail: '有人开始对齐口径' };
+  if (pressure >= 36) return { label: '有风声', tone: 'watch', detail: '茶水间音量下降' };
+  return { label: '平稳', tone: 'safe', detail: '暂未闻到 HR 香水味' };
+}
+
+export function getWeChatNudge(state, eventType = 'daily') {
+  if (eventType === 'crisis') return 'HRBP：方便 15 分钟后同步一下吗？';
+  if (eventType === 'opportunity') return '直属领导：这个机会你先接一下，后面好说。';
+  if (state.hidden.landmine >= 60) return '直属领导：你这个 OKR 怎么理解？';
+  return '企业微信：你有一条未读的组织气氛。';
+}
+
+export function getMomentsCopy(state, endingTitle) {
+  const title = getWorkTitle(state);
+  const days = Math.min(state.day, 90);
+  const gaze = getBossGaze(state).label;
+  return `我在大厂裁员生存模拟器里活了 ${days} 天，工位称号「${title}」，老板凝视状态「${gaze}」，最后走向「${endingTitle}」。`;
+}

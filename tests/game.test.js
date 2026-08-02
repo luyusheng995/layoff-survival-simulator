@@ -55,6 +55,9 @@ test('actions consume one energy and change the expected stats', () => {
   assert.equal(next.energy, 2);
   assert.equal(next.stats.performance, 68);
   assert.equal(next.stats.hair, 74);
+  assert.equal(next.metrics.actionCounts.overtime, 1);
+  assert.equal(next.metrics.lastActionId, 'overtime');
+  assert.equal(next.metrics.actionStreak, 1);
 });
 
 test('cannot act with zero energy', () => {
@@ -717,15 +720,40 @@ test('office intel adds rumor blame ranking and work title hooks', async () => {
   assert.equal(typeof flavor.getTeaRoomRumor(state), 'string');
   assert.ok(flavor.getBlameRank(state).rank >= 1);
   assert.ok(flavor.getWorkTitle(state).length > 0);
+  assert.ok(flavor.getBossGaze(state).value >= 0);
+  assert.ok(flavor.getLayoffWind(state).label.length > 0);
+  assert.ok(flavor.getWeChatNudge(state).includes('企业微信'));
+  assert.ok(flavor.getMomentsCopy(state, '继续上班').includes('朋友圈') === false);
   assert.ok(main.includes('office-intel-strip'));
   assert.ok(main.includes('getTeaRoomRumor'));
   assert.ok(main.includes('getBlameRank'));
   assert.ok(main.includes('getWorkTitle'));
+  assert.ok(main.includes('getBossGaze'));
+  assert.ok(main.includes('getLayoffWind'));
+  assert.ok(main.includes('getWeChatNudge'));
+  assert.ok(main.includes('getMomentsCopy'));
   assert.ok(styles.includes('.office-intel-strip'));
   assert.ok(styles.includes('.work-title-proof'));
+  assert.ok(styles.includes('.wechat-nudge'));
+  assert.ok(styles.includes('.moments-copy'));
   assert.ok(smoke.includes('茶水间传闻'));
   assert.ok(smoke.includes('背锅名单'));
   assert.ok(smoke.includes('工位称号'));
+  assert.ok(smoke.includes('老板凝视值'));
+  assert.ok(smoke.includes('裁员风向榜'));
+  assert.ok(smoke.includes('摸鱼彩蛋'));
+  assert.ok(smoke.includes('企业微信气泡'));
+});
+
+test('three consecutive slack off actions trigger the stall meeting easter egg', () => {
+  let state = createInitialState();
+  state = applyAction(state, 'slack_off');
+  state = applyAction(state, 'slack_off');
+  state = applyAction(state, 'slack_off');
+  assert.equal(state.energy, 0);
+  assert.equal(state.metrics.actionCounts.slack_off, 3);
+  assert.equal(state.metrics.actionStreak, 3);
+  assert.ok(state.logs[0].includes('厕所隔间战略会议'));
 });
 
 test('index versions runtime assets for public cache busting', () => {

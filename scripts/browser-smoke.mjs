@@ -118,6 +118,8 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await textCheck(client, '茶水间传闻', '茶水间'));
     checks.push(await textCheck(client, '背锅名单', '背锅名单'));
     checks.push(await textCheck(client, '工位称号', '工位称号'));
+    checks.push(await textCheck(client, '老板凝视值', '老板凝视'));
+    checks.push(await textCheck(client, '裁员风向榜', '裁员风向'));
     checks.push(await expressionCheck(
       client,
       '无横向溢出',
@@ -181,7 +183,7 @@ async function runViewportSmoke(debugPort, viewport) {
 
     await client.evaluate(`
       (async () => {
-        for (const id of ['slack_off', 'overtime', 'side_hustle']) {
+        for (const id of ['slack_off', 'slack_off', 'slack_off']) {
           document.querySelector('[data-action="' + id + '"]').click();
           await new Promise((resolve) => setTimeout(resolve, 80));
         }
@@ -189,9 +191,11 @@ async function runViewportSmoke(debugPort, viewport) {
     `);
     await sleep(300);
 
+    checks.push(await textCheck(client, '摸鱼彩蛋', '厕所隔间战略会议'));
     checks.push(await textCheck(client, '精力用完提示', '精力用完'));
     checks.push(await textCheck(client, '企业通知样式', '企业通知'));
     checks.push(await textCheck(client, '组织风险提示', '组织风险'));
+    checks.push(await textCheck(client, '企业微信气泡', '企业微信'));
     checks.push(await expressionCheck(
       client,
       '首个事件出现',

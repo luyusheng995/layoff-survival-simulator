@@ -12,7 +12,15 @@ import { createOnboardingBrief } from './game/onboarding.js';
 import { createFirstMinuteFunnel } from './game/funnel.js';
 import { createAdInventoryItems } from './game/ad-inventory.js';
 import { PUBLIC_PLAY_URL, createLaunchShareText, getLaunchNotes } from './game/launch.js';
-import { getBlameRank, getTeaRoomRumor, getWorkTitle } from './game/flavor.js';
+import {
+  getBlameRank,
+  getBossGaze,
+  getLayoffWind,
+  getMomentsCopy,
+  getTeaRoomRumor,
+  getWeChatNudge,
+  getWorkTitle
+} from './game/flavor.js';
 import {
   AD_PLACEMENTS,
   activateDailyBuff,
@@ -295,6 +303,8 @@ function renderActions() {
   const disabled = state.energy <= 0 || Boolean(modal);
   const actionHint = disabled ? '处理公司事件后进入下一天' : '点一次扣 1 点，用完触发公司事件';
   const blameRank = getBlameRank(state);
+  const bossGaze = getBossGaze(state);
+  const layoffWind = getLayoffWind(state);
   return `
     <section class="panel ability-panel" aria-label="今日行动">
       <div class="panel-title-row">
@@ -304,6 +314,8 @@ function renderActions() {
       <div class="office-intel-strip" aria-label="办公室情报">
         <span><b>茶水间</b>${escapeHtml(getTeaRoomRumor(state))}</span>
         <span class="${escapeHtml(blameRank.tone)}"><b>背锅名单</b>第 ${blameRank.rank} 名 · ${escapeHtml(blameRank.label)}</span>
+        <span class="${escapeHtml(layoffWind.tone)}"><b>裁员风向</b>${escapeHtml(layoffWind.label)} · ${escapeHtml(layoffWind.detail)}</span>
+        <span class="${escapeHtml(bossGaze.tone)}"><b>老板凝视 ${bossGaze.value}%</b>${escapeHtml(bossGaze.line)}</span>
         <span><b>工位称号</b>${escapeHtml(getWorkTitle(state))}</span>
       </div>
       <div class="actions-grid">
@@ -589,6 +601,10 @@ function renderMobileMission() {
           <span>${escapeHtml(noticeSource(activeEvent.type))}</span>
           <span>组织风险 ${escapeHtml(riskText())}</span>
         </div>
+        <div class="wechat-nudge">
+          <b>${activeEvent.type === 'crisis' ? 'HRBP' : '企业微信'}</b>
+          <span>${escapeHtml(getWeChatNudge(state, activeEvent.type))}</span>
+        </div>
       ` : ''}
       <p class="mission-meta">${escapeHtml(missionMeta)}</p>
       <p>${escapeHtml(missionBody)}</p>
@@ -732,6 +748,7 @@ function renderModal() {
         <div class="modal-actions">
           ${reviveButton}
           ${report ? '<button class="primary-button copy-button" data-copy-report="true">复制报告文案</button>' : ''}
+          ${report ? '<button class="primary-button ghost-button" data-copy-moments="true">复制朋友圈文案</button>' : ''}
           ${report ? `<button class="primary-button ghost-button" data-snapshot-toggle="true">${snapshotMode ? '退出截图模式' : '截图模式'}</button>` : ''}
           <button class="primary-button" data-restart="true">重新开局</button>
         </div>
@@ -757,6 +774,10 @@ function renderShareCard(report) {
       <div class="work-title-proof">
         <span>工位称号</span>
         <strong>${escapeHtml(getWorkTitle(state))}</strong>
+      </div>
+      <div class="moments-copy">
+        <span>朋友圈文案</span>
+        <p>${escapeHtml(getMomentsCopy(state, report.endingTitle))}</p>
       </div>
       <div class="share-grid">
         <span><strong>${report.daysSurvived}</strong><small>存活天数</small></span>
@@ -920,6 +941,21 @@ async function copyReport() {
   render();
 }
 
+async function copyMoments() {
+  if (!modal?.ending) return;
+  const report = createShareReport(state, modal.ending);
+  try {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error('Clipboard unavailable');
+    }
+    await navigator.clipboard.writeText(getMomentsCopy(state, report.endingTitle));
+    state = appendLog(state, '朋友圈文案已复制，可以低调发疯。');
+  } catch {
+    state = appendLog(state, `当前浏览器不支持自动复制：${getMomentsCopy(state, report.endingTitle)}`);
+  }
+  render();
+}
+
 async function copyLaunchLink() {
   try {
     if (!navigator.clipboard?.writeText) {
@@ -962,6 +998,7 @@ app.addEventListener('click', (event) => {
   const difficultyButton = event.target.closest('[data-difficulty]');
   const restartButton = event.target.closest('[data-restart]');
   const copyButton = event.target.closest('[data-copy-report]');
+  const momentsButton = event.target.closest('[data-copy-moments]');
   const launchCopyButton = event.target.closest('[data-copy-launch]');
   const snapshotButton = event.target.closest('[data-snapshot-toggle]');
   const onboardingButton = event.target.closest('[data-dismiss-onboarding]');
@@ -978,6 +1015,7 @@ app.addEventListener('click', (event) => {
   if (difficultyButton) selectDifficulty(difficultyButton.dataset.difficulty);
   if (restartButton) restart();
   if (copyButton) copyReport();
+  if (momentsButton) copyMoments();
   if (launchCopyButton) copyLaunchLink();
   if (snapshotButton) toggleSnapshotMode();
   if (onboardingButton) dismissOnboarding();
