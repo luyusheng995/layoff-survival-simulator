@@ -28,6 +28,7 @@ import { createDeliveryMarkdown, createGameConfig } from '../src/game/config-exp
 import { createReleaseChecklist, createReleaseChecklistMarkdown } from '../src/game/release-checklist.js';
 import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../src/game/release-package.js';
 import { createFirstMinuteFunnel } from '../src/game/funnel.js';
+import { PUBLIC_PLAY_URL, createLaunchShareText, getLaunchNotes } from '../src/game/launch.js';
 import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playtest.js';
 import {
   createBrowserSmokeMarkdown,
@@ -467,6 +468,21 @@ test('first screen funnel recommends revive during failure modal', () => {
   assert.ok(funnel.primaryAd.reason.includes('复活'));
 });
 
+test('launch metadata exposes public play URL and current notes', () => {
+  assert.equal(PUBLIC_PLAY_URL, 'https://luyusheng995.github.io/layoff-survival-simulator/');
+  const notes = getLaunchNotes();
+  assert.ok(notes.length >= 2);
+  assert.deepEqual(Object.keys(notes[0]), ['version', 'label', 'detail']);
+  assert.ok(notes.some((note) => note.label.includes('公开试玩')));
+});
+
+test('launch share text includes the public URL and game name', () => {
+  const shareText = createLaunchShareText();
+  assert.ok(shareText.includes('大厂裁员生存模拟器'));
+  assert.ok(shareText.includes(PUBLIC_PLAY_URL));
+  assert.ok(shareText.includes('90 天'));
+});
+
 test('playtest scenarios cover first minute crisis revive and ending paths', () => {
   const report = runPlaytestScenarios();
   assert.equal(report.passed, true);
@@ -619,6 +635,11 @@ test('github pages workflow deploys the packaged static site', () => {
   assert.ok(workflow.includes('actions/upload-pages-artifact'));
   assert.ok(workflow.includes('path: .pages-dist'));
   assert.ok(workflow.includes('actions/deploy-pages'));
+});
+
+test('readme links to the public playable build', () => {
+  const readme = readFileSync('README.md', 'utf8');
+  assert.ok(readme.includes('https://luyusheng995.github.io/layoff-survival-simulator/'));
 });
 
 test('simulation is deterministic for the same seed', () => {

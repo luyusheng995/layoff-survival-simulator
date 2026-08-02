@@ -11,6 +11,7 @@ import { createStatDeltas, getNextCheckpoint } from './game/feedback.js';
 import { createOnboardingBrief } from './game/onboarding.js';
 import { createFirstMinuteFunnel } from './game/funnel.js';
 import { createAdInventoryItems } from './game/ad-inventory.js';
+import { PUBLIC_PLAY_URL, createLaunchShareText, getLaunchNotes } from './game/launch.js';
 import {
   AD_PLACEMENTS,
   activateDailyBuff,
@@ -238,6 +239,19 @@ function renderRecommendedAd() {
   `;
 }
 
+function renderLaunchStrip() {
+  return `
+    <section class="launch-strip">
+      <div>
+        <span class="launch-kicker">公开试玩链接</span>
+        <strong>发给同事前，先确认自己能撑几天</strong>
+        <small>${escapeHtml(PUBLIC_PLAY_URL)}</small>
+      </div>
+      <button class="launch-copy-button" data-copy-launch="true">复制试玩链接</button>
+    </section>
+  `;
+}
+
 function renderFeedback() {
   if (!lastFeedback) {
     return `
@@ -392,6 +406,23 @@ function renderAds() {
   `;
 }
 
+function renderLaunchNotes() {
+  return `
+    <section class="panel launch-notes">
+      <h2>上线记录</h2>
+      <div class="launch-note-list">
+        ${getLaunchNotes().map((note) => `
+          <article class="launch-note">
+            <span>${escapeHtml(note.version)}</span>
+            <strong>${escapeHtml(note.label)}</strong>
+            <small>${escapeHtml(note.detail)}</small>
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
 function renderAdPlacement(item) {
   const dataAttr = item.actionable ? `data-ad="${escapeHtml(item.id)}"` : '';
   const disabled = item.actionable ? '' : 'disabled';
@@ -503,12 +534,14 @@ function render() {
       ${renderStats()}
       <div class="main-grid">
         <div class="game-column">
+          ${renderLaunchStrip()}
           ${renderOnboarding()}
           ${renderRecommendedAd()}
           ${renderActions()}
           ${renderEvent()}
         </div>
         <aside class="side-column">
+          ${renderLaunchNotes()}
           ${renderDifficultyPanel()}
           ${renderTalentPanel()}
           ${renderAds()}
@@ -657,6 +690,19 @@ async function copyReport() {
   render();
 }
 
+async function copyLaunchLink() {
+  try {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error('Clipboard unavailable');
+    }
+    await navigator.clipboard.writeText(createLaunchShareText());
+    state = appendLog(state, '公开试玩链接已复制，适合发给还在开会的人。');
+  } catch {
+    state = appendLog(state, `当前浏览器不支持自动复制，请手动复制：${PUBLIC_PLAY_URL}`);
+  }
+  render();
+}
+
 function selectTalent(talentId) {
   selectedTalentId = talentId === 'none' ? null : talentId;
   restart();
@@ -685,6 +731,7 @@ app.addEventListener('click', (event) => {
   const difficultyButton = event.target.closest('[data-difficulty]');
   const restartButton = event.target.closest('[data-restart]');
   const copyButton = event.target.closest('[data-copy-report]');
+  const launchCopyButton = event.target.closest('[data-copy-launch]');
   const snapshotButton = event.target.closest('[data-snapshot-toggle]');
   const onboardingButton = event.target.closest('[data-dismiss-onboarding]');
 
@@ -695,6 +742,7 @@ app.addEventListener('click', (event) => {
   if (difficultyButton) selectDifficulty(difficultyButton.dataset.difficulty);
   if (restartButton) restart();
   if (copyButton) copyReport();
+  if (launchCopyButton) copyLaunchLink();
   if (snapshotButton) toggleSnapshotMode();
   if (onboardingButton) dismissOnboarding();
 });

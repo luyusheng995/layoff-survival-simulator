@@ -111,6 +111,7 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
     checks.push(await textCheck(client, '今日工位简报', '今日工位简报'));
     checks.push(await textCheck(client, '推荐广告', '今日救命广告'));
+    checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
     checks.push(await textCheck(client, '行动区', '今日精力分配'));
     checks.push(await expressionCheck(
       client,
@@ -129,6 +130,12 @@ async function runViewportSmoke(debugPort, viewport) {
       '推荐广告入口不重复',
       'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 1',
       '每日 Buff 只有一个可点击 CTA'
+    ));
+    checks.push(await expressionCheck(
+      client,
+      '复制试玩链接入口',
+      'Boolean(document.querySelector("[data-copy-launch]"))',
+      '公开试玩链接有复制按钮'
     ));
 
     await client.evaluate(`

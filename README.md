@@ -14,6 +14,14 @@
 
 ## 运行
 
+线上试玩：
+
+```text
+https://luyusheng995.github.io/layoff-survival-simulator/
+```
+
+本地运行：
+
 ```bash
 npm start
 ```

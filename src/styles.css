@@ -283,6 +283,54 @@ button:disabled {
   padding: 15px;
 }
 
+.launch-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.32fr);
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(194, 31, 50, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(194, 31, 50, 0.07) 1px, transparent 1px) 0 0 / 18px 18px,
+    var(--paper);
+  box-shadow: var(--shadow);
+  padding: 13px 15px;
+}
+
+.launch-kicker {
+  display: block;
+  color: var(--stamp);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.launch-strip strong,
+.launch-strip small {
+  display: block;
+}
+
+.launch-strip strong {
+  margin-top: 4px;
+  font-size: 18px;
+}
+
+.launch-strip small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.launch-copy-button {
+  width: 100%;
+  border-color: var(--stamp);
+  background: var(--stamp);
+  color: #fff;
+  padding: 11px 13px;
+  font-weight: 900;
+}
+
 .funnel-card h2 {
   margin: 5px 0 6px;
   font-size: 21px;
@@ -479,6 +527,41 @@ button:disabled {
 .ad-placement-list {
   display: grid;
   gap: 9px;
+}
+
+.launch-note-list {
+  display: grid;
+  gap: 8px;
+}
+
+.launch-note {
+  border: 1px solid rgba(19, 111, 99, 0.24);
+  border-radius: 8px;
+  background: #f7fffc;
+  padding: 10px;
+}
+
+.launch-note span,
+.launch-note strong,
+.launch-note small {
+  display: block;
+}
+
+.launch-note span {
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.launch-note strong {
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.launch-note small {
+  margin-top: 5px;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .ad-placement {
@@ -866,6 +949,10 @@ button:disabled {
   }
 
   .funnel-card {
+    grid-template-columns: 1fr;
+  }
+
+  .launch-strip {
     grid-template-columns: 1fr;
   }
 
