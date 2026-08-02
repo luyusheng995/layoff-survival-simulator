@@ -512,15 +512,15 @@ function renderCharacterCard() {
   ];
 
   return `
-    <section class="character-card" aria-label="角色档案">
+    <section class="character-card" aria-label="工位档案">
       <div class="avatar-mark" aria-hidden="true">
         <span>HR</span>
       </div>
       <div class="character-copy">
-        <span class="card-kicker">角色档案</span>
+        <span class="card-kicker">工位档案</span>
         <h1>大厂裁员生存模拟器</h1>
-        <p>打工人专属生存档 · ${difficultyLabel()}</p>
-        <b>${escapeHtml(selectedTalent?.label || '普通牛马 Lv1')}</b>
+        <p>裁员季生存档 · ${difficultyLabel()}</p>
+        <b>${escapeHtml(selectedTalent?.label || '普通员工 Lv1')}</b>
       </div>
       <div class="profile-grid">
         ${profileStats.map(([label, value]) => `
@@ -582,7 +582,7 @@ function renderMobileChoices() {
 
 function renderMobileChecklist(brief, funnel) {
   const tasks = brief.visible ? brief.tasks : [
-    { id: 'publish', label: funnel.primaryAd?.title || '发布 1 个作品', completed: false },
+    { id: 'daily-brief', label: funnel.primaryAd?.title || '处理 1 个事项', completed: false },
     { id: 'fans', label: funnel.primaryAd?.reward || '攒够下一次组织校准资源', completed: false },
     { id: 'actions', label: '完成 3 次行动', completed: state.energy === 0 },
     { id: 'checkpoint', label: `等到第 ${getNextCheckpoint(state.day).day} 天校准`, completed: false }
@@ -609,11 +609,11 @@ function renderMobileChecklist(brief, funnel) {
 
 function renderAbilityBars() {
   const abilities = [
-    ['绩效', state.stats.performance, '#f23a85'],
-    ['发量', state.stats.hair, '#8b45ff'],
+    ['绩效', state.stats.performance, '#b42318'],
+    ['发量', state.stats.hair, '#2563eb'],
     ['尊严', state.stats.dignity, '#28c78f'],
-    ['存款', Math.min(150, Math.round(state.stats.savings / 200)), '#ffc234'],
-    ['埋雷', state.hidden.landmine, '#ff5b61']
+    ['存款', Math.min(150, Math.round(state.stats.savings / 200)), '#c88719'],
+    ['埋雷', state.hidden.landmine, '#dc2626']
   ];
 
   return `
@@ -642,16 +642,14 @@ function renderHomeTab() {
 
 function renderSecondaryTabPanel() {
   const panels = {
-    growth: `${renderDifficultyPanel()}${renderTalentPanel()}`,
-    works: `${renderEndingGallery()}`,
-    rank: `${renderLogs()}`,
-    support: `${renderAds()}${renderLaunchStrip()}`,
-    mine: `${renderLaunchNotes()}${renderFeedback()}`
+    strategy: `${renderDifficultyPanel()}${renderTalentPanel()}`,
+    resources: `${renderAds()}${renderLaunchStrip()}`,
+    records: `${renderLogs()}${renderEndingGallery()}${renderLaunchNotes()}${renderFeedback()}`
   };
 
   return `
     <main class="secondary-tab-panel">
-      ${panels[activeTab] || panels.growth}
+      ${panels[activeTab] || panels.strategy}
     </main>
   `;
 }
@@ -659,11 +657,9 @@ function renderSecondaryTabPanel() {
 function renderBottomNav() {
   const tabs = [
     ['home', '主页'],
-    ['growth', '养成'],
-    ['works', '作品'],
-    ['rank', '打榜'],
-    ['support', '后援'],
-    ['mine', '我的']
+    ['strategy', '策略'],
+    ['resources', '补给'],
+    ['records', '记录']
   ];
 
   return `

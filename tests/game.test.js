@@ -612,10 +612,24 @@ test('browser smoke enforces the single screen mobile dashboard contract', () =>
   const script = readFileSync('scripts/browser-smoke.mjs', 'utf8');
   assert.ok(script.includes('移动端无上下滚动'));
   assert.ok(script.includes('document.documentElement.scrollHeight <= window.innerHeight + 1'));
-  assert.ok(script.includes('角色档案'));
+  assert.ok(script.includes('工位档案'));
   assert.ok(script.includes('当前任务'));
   assert.ok(script.includes('能力面板'));
   assert.ok(script.includes('data-tab="home"'));
+});
+
+test('mobile dashboard copy and palette match the layoff survival theme', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  for (const offThemeText of ['养成', '作品', '打榜', '后援', '粉丝', '角色档案']) {
+    assert.equal(main.includes(offThemeText), false, offThemeText);
+  }
+  assert.equal(styles.includes('--pink'), false);
+  assert.equal(styles.includes('#f23a85'), false);
+  assert.ok(main.includes('工位档案'));
+  assert.ok(main.includes('策略'));
+  assert.ok(main.includes('补给'));
+  assert.ok(main.includes('记录'));
 });
 
 test('pages package manifest contains runtime static assets only', async () => {

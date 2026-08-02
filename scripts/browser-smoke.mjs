@@ -109,7 +109,7 @@ async function runViewportSmoke(debugPort, viewport) {
     await sleep(400);
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
-    checks.push(await textCheck(client, '角色卡', '角色档案'));
+    checks.push(await textCheck(client, '工位档案', '工位档案'));
     checks.push(await textCheck(client, '当前任务卡', '当前任务'));
     checks.push(await textCheck(client, '能力面板', '能力面板'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
@@ -129,8 +129,8 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await expressionCheck(
       client,
       '底部导航',
-      'Boolean(document.querySelector(`[data-tab="home"]`))',
-      '首页标签存在'
+      'Boolean(document.querySelector(`[data-tab="home"]`)) && Boolean(document.querySelector(`[data-tab="strategy"]`)) && Boolean(document.querySelector(`[data-tab="resources"]`)) && Boolean(document.querySelector(`[data-tab="records"]`))',
+      '主页、策略、补给、记录标签存在'
     ));
     checks.push(await expressionCheck(
       client,
