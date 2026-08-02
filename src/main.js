@@ -37,6 +37,7 @@ let unlockedEndingIds = loadUnlockedEndings();
 let lastFeedback = null;
 let snapshotMode = false;
 let onboardingDismissed = loadOnboardingDismissed();
+let activeTab = 'home';
 
 const statLabels = {
   performance: '绩效分',
@@ -279,8 +280,11 @@ function renderFeedback() {
 function renderActions() {
   const disabled = state.energy <= 0 || Boolean(modal);
   return `
-    <section class="panel">
-      <h2>今日精力分配</h2>
+    <section class="panel ability-panel">
+      <div class="panel-title-row">
+        <h2>能力面板</h2>
+        <span>今日精力分配</span>
+      </div>
       <div class="actions-grid">
         ${ACTION_DEFS.map((action) => `
           <button class="action-button" data-action="${escapeHtml(action.id)}" ${disabled ? 'disabled' : ''}>
@@ -476,6 +480,203 @@ function renderLogs() {
   `;
 }
 
+function clampPercent(value, max = 100) {
+  return Math.max(0, Math.min(100, Math.round((value / max) * 100)));
+}
+
+function renderMobileStatus() {
+  return `
+    <header class="mobile-status">
+      <div class="week-clock">
+        <strong>第 ${Math.ceil(state.day / 7)} 周</strong>
+        <span>${String(9 + ((state.day - 1) % 8)).padStart(2, '0')}:00</span>
+      </div>
+      <div class="status-pills" aria-label="当前状态">
+        <span>资金 ${money(state.stats.savings).replace('¥', '')}</span>
+        <span>绩效 ${state.stats.performance}</span>
+        <span>行动 ${state.energy}/3</span>
+        <span class="health-pill">尊严 ${state.stats.dignity}/100</span>
+        <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+      </div>
+    </header>
+  `;
+}
+
+function renderCharacterCard() {
+  const selectedTalent = TALENTS.find((talent) => talent.id === selectedTalentId);
+  const profileStats = [
+    ['绩效', state.stats.performance],
+    ['存款', money(state.stats.savings)],
+    ['发量', state.stats.hair],
+    ['压力', riskText()]
+  ];
+
+  return `
+    <section class="character-card" aria-label="角色档案">
+      <div class="avatar-mark" aria-hidden="true">
+        <span>HR</span>
+      </div>
+      <div class="character-copy">
+        <span class="card-kicker">角色档案</span>
+        <h1>大厂裁员生存模拟器</h1>
+        <p>打工人专属生存档 · ${difficultyLabel()}</p>
+        <b>${escapeHtml(selectedTalent?.label || '普通牛马 Lv1')}</b>
+      </div>
+      <div class="profile-grid">
+        ${profileStats.map(([label, value]) => `
+          <span>
+            <strong>${escapeHtml(value)}</strong>
+            <small>${escapeHtml(label)}</small>
+          </span>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderMobileMission() {
+  const brief = createOnboardingBrief(state, {
+    dismissed: onboardingDismissed,
+    unlockedEndingCount: unlockedEndingIds.length
+  });
+  const funnel = createFirstMinuteFunnel(state, adContext());
+  const missionTitle = activeEvent ? activeEvent.title : (brief.visible ? brief.title : funnel.headline);
+  const missionMeta = activeEvent
+    ? `${eventTypeLabels[activeEvent.type]} · 第 ${state.day} 天`
+    : `第 ${state.day} 天 · ${difficultyLabel()} · ${funnel.stage}`;
+  const missionBody = activeEvent
+    ? activeEvent.body
+    : (brief.visible ? brief.summary : funnel.summary);
+
+  return `
+    <section class="mission-card" aria-label="当前任务">
+      <div class="mission-head">
+        <div>
+          <span>当前任务</span>
+          <h2>${escapeHtml(missionTitle)}</h2>
+        </div>
+        <b>${state.dailyBuffs?.slackSafe ? '今日 Buff' : (state.energy > 0 ? '稳定' : '结算')}</b>
+      </div>
+      <p class="mission-meta">${escapeHtml(missionMeta)}</p>
+      <p>${escapeHtml(missionBody)}</p>
+      ${state.logs[0] ? `<div class="mission-feedback">${escapeHtml(state.logs[0])}</div>` : ''}
+      ${activeEvent ? renderMobileChoices() : renderMobileChecklist(brief, funnel)}
+    </section>
+  `;
+}
+
+function renderMobileChoices() {
+  const skipAvailability = canUseRewardedAd(state, 'skipCrisis', adContext());
+  return `
+    <div class="choices-grid">
+      ${activeEvent.choices.map((choice) => `
+        <button class="choice-button" data-choice="${escapeHtml(choice.id)}">
+          <span class="choice-title">${escapeHtml(choice.label)}</span>
+          <span class="choice-effect">${escapeHtml(formatEffects(choice.effects))}</span>
+        </button>
+      `).join('')}
+      ${skipAvailability.ok ? renderInlineAdButton('skipCrisis') : ''}
+    </div>
+  `;
+}
+
+function renderMobileChecklist(brief, funnel) {
+  const tasks = brief.visible ? brief.tasks : [
+    { id: 'publish', label: funnel.primaryAd?.title || '发布 1 个作品', completed: false },
+    { id: 'fans', label: funnel.primaryAd?.reward || '攒够下一次组织校准资源', completed: false },
+    { id: 'actions', label: '完成 3 次行动', completed: state.energy === 0 },
+    { id: 'checkpoint', label: `等到第 ${getNextCheckpoint(state.day).day} 天校准`, completed: false }
+  ];
+
+  return `
+    <div class="mission-actions">
+      ${funnel.primaryAd ? `
+        <button class="funnel-ad-button" data-ad="${escapeHtml(funnel.primaryAd.id)}">
+          ${escapeHtml(funnel.primaryAd.buttonText)}
+        </button>
+      ` : ''}
+      <div class="task-chip-grid">
+        ${tasks.slice(0, 4).map((task) => `
+          <span class="${task.completed ? 'done' : ''}">
+            <i aria-hidden="true"></i>
+            ${escapeHtml(task.label)}
+          </span>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderAbilityBars() {
+  const abilities = [
+    ['绩效', state.stats.performance, '#f23a85'],
+    ['发量', state.stats.hair, '#8b45ff'],
+    ['尊严', state.stats.dignity, '#28c78f'],
+    ['存款', Math.min(150, Math.round(state.stats.savings / 200)), '#ffc234'],
+    ['埋雷', state.hidden.landmine, '#ff5b61']
+  ];
+
+  return `
+    <section class="growth-strip" aria-label="成长状态">
+      ${abilities.map(([label, value, color]) => `
+        <span>
+          <b>${escapeHtml(label)}</b>
+          <strong>${escapeHtml(value)}/100</strong>
+          <i style="--bar-color: ${escapeHtml(color)}; --bar-width: ${clampPercent(value)}%"></i>
+        </span>
+      `).join('')}
+    </section>
+  `;
+}
+
+function renderHomeTab() {
+  return `
+    <main class="dashboard-home ${activeEvent ? 'event-mode' : ''}">
+      ${renderCharacterCard()}
+      ${renderMobileMission()}
+      ${activeEvent ? '' : renderActions()}
+      ${renderAbilityBars()}
+    </main>
+  `;
+}
+
+function renderSecondaryTabPanel() {
+  const panels = {
+    growth: `${renderDifficultyPanel()}${renderTalentPanel()}`,
+    works: `${renderEndingGallery()}`,
+    rank: `${renderLogs()}`,
+    support: `${renderAds()}${renderLaunchStrip()}`,
+    mine: `${renderLaunchNotes()}${renderFeedback()}`
+  };
+
+  return `
+    <main class="secondary-tab-panel">
+      ${panels[activeTab] || panels.growth}
+    </main>
+  `;
+}
+
+function renderBottomNav() {
+  const tabs = [
+    ['home', '主页'],
+    ['growth', '养成'],
+    ['works', '作品'],
+    ['rank', '打榜'],
+    ['support', '后援'],
+    ['mine', '我的']
+  ];
+
+  return `
+    <nav class="bottom-nav" aria-label="底部导航">
+      ${tabs.map(([id, label]) => `
+        <button data-tab="${id}" class="${activeTab === id ? 'active' : ''}" aria-current="${activeTab === id ? 'page' : 'false'}">
+          ${label}
+        </button>
+      `).join('')}
+    </nav>
+  `;
+}
+
 function renderModal() {
   if (!modal) return '';
 
@@ -531,24 +732,9 @@ function render() {
   ensureEvent();
   app.innerHTML = `
     <div class="game-shell">
-      ${renderStats()}
-      <div class="main-grid">
-        <div class="game-column">
-          ${renderLaunchStrip()}
-          ${renderOnboarding()}
-          ${renderRecommendedAd()}
-          ${renderActions()}
-          ${renderEvent()}
-        </div>
-        <aside class="side-column">
-          ${renderLaunchNotes()}
-          ${renderDifficultyPanel()}
-          ${renderTalentPanel()}
-          ${renderAds()}
-          ${renderLogs()}
-          ${renderEndingGallery()}
-        </aside>
-      </div>
+      ${renderMobileStatus()}
+      ${activeTab === 'home' ? renderHomeTab() : renderSecondaryTabPanel()}
+      ${renderBottomNav()}
     </div>
     ${renderModal()}
     ${renderAdOverlay()}
@@ -724,6 +910,7 @@ function dismissOnboarding() {
 }
 
 app.addEventListener('click', (event) => {
+  const tabButton = event.target.closest('[data-tab]');
   const actionButton = event.target.closest('[data-action]');
   const choiceButton = event.target.closest('[data-choice]');
   const adButton = event.target.closest('[data-ad]');
@@ -735,6 +922,11 @@ app.addEventListener('click', (event) => {
   const snapshotButton = event.target.closest('[data-snapshot-toggle]');
   const onboardingButton = event.target.closest('[data-dismiss-onboarding]');
 
+  if (tabButton) {
+    activeTab = tabButton.dataset.tab;
+    render();
+    return;
+  }
   if (actionButton) handleAction(actionButton.dataset.action);
   if (choiceButton) handleChoice(choiceButton.dataset.choice);
   if (adButton) handleAd(adButton.dataset.ad);

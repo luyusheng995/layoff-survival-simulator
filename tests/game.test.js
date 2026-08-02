@@ -608,6 +608,16 @@ test('browser smoke retries Linux profile cleanup races', () => {
   assert.ok(script.includes('cleanupRetryableErrors'));
 });
 
+test('browser smoke enforces the single screen mobile dashboard contract', () => {
+  const script = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(script.includes('移动端无上下滚动'));
+  assert.ok(script.includes('document.documentElement.scrollHeight <= window.innerHeight + 1'));
+  assert.ok(script.includes('角色档案'));
+  assert.ok(script.includes('当前任务'));
+  assert.ok(script.includes('能力面板'));
+  assert.ok(script.includes('data-tab="home"'));
+});
+
 test('pages package manifest contains runtime static assets only', async () => {
   const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
   const manifest = createPagesPackageManifest();

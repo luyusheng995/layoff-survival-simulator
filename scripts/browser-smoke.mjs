@@ -109,8 +109,9 @@ async function runViewportSmoke(debugPort, viewport) {
     await sleep(400);
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
-    checks.push(await textCheck(client, '今日工位简报', '今日工位简报'));
-    checks.push(await textCheck(client, '推荐广告', '今日救命广告'));
+    checks.push(await textCheck(client, '角色卡', '角色档案'));
+    checks.push(await textCheck(client, '当前任务卡', '当前任务'));
+    checks.push(await textCheck(client, '能力面板', '能力面板'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
     checks.push(await textCheck(client, '行动区', '今日精力分配'));
     checks.push(await expressionCheck(
@@ -118,6 +119,18 @@ async function runViewportSmoke(debugPort, viewport) {
       '无横向溢出',
       'document.documentElement.scrollWidth <= window.innerWidth + 1',
       `${viewport.width}x${viewport.height}`
+    ));
+    checks.push(await expressionCheck(
+      client,
+      '移动端无上下滚动',
+      'document.documentElement.scrollHeight <= window.innerHeight + 1',
+      `${viewport.width}x${viewport.height}`
+    ));
+    checks.push(await expressionCheck(
+      client,
+      '底部导航',
+      'Boolean(document.querySelector(`[data-tab="home"]`))',
+      '首页标签存在'
     ));
     checks.push(await expressionCheck(
       client,
