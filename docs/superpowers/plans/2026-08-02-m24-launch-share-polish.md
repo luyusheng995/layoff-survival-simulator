@@ -51,4 +51,4 @@
 - [x] **Step 4: Add `copyLaunchLink()` and route `[data-copy-launch]` clicks.**
 - [x] **Step 5: Add compact styles for launch strip and update log.**
 - [x] **Step 6: Add the public play URL to README.**
-- [ ] **Step 7: Run `npm test`, local `npm run browser:smoke`, and online Pages smoke.**
+- [x] **Step 7: Run `npm test`, local `npm run browser:smoke`, and online Pages smoke.**
