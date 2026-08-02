@@ -487,15 +487,18 @@ function clampPercent(value, max = 100) {
 function renderMobileStatus() {
   return `
     <header class="mobile-status">
-      <div class="week-clock">
-        <strong>第 ${Math.ceil(state.day / 7)} 周</strong>
-        <span>${String(9 + ((state.day - 1) % 8)).padStart(2, '0')}:00</span>
+      <div class="account-avatar" aria-label="账号头像">
+        <span>企</span>
       </div>
       <div class="work-brief" aria-label="工位档案">
         <span>工位档案</span>
         <strong>大厂裁员生存模拟器</strong>
         <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
         <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
+      </div>
+      <div class="week-clock">
+        <strong>第 ${Math.ceil(state.day / 7)} 周</strong>
+        <span>${String(9 + ((state.day - 1) % 8)).padStart(2, '0')}:00</span>
       </div>
     </header>
   `;

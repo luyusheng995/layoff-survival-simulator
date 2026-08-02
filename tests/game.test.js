@@ -659,6 +659,17 @@ test('home action cards keep stat effects visible', () => {
   assert.ok(smoke.includes('行动属性可见'));
 });
 
+test('mobile header reserves avatar slot and moves week clock right', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(main.includes('account-avatar'));
+  assert.ok(main.indexOf('account-avatar') < main.indexOf('work-brief'));
+  assert.ok(main.indexOf('work-brief') < main.indexOf('week-clock'));
+  assert.ok(styles.includes('.account-avatar'));
+  assert.ok(smoke.includes('头像在左周次在右'));
+});
+
 test('pages package manifest contains runtime static assets only', async () => {
   const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
   const manifest = createPagesPackageManifest();

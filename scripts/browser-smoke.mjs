@@ -145,6 +145,12 @@ async function runViewportSmoke(debugPort, viewport) {
     ));
     checks.push(await expressionCheck(
       client,
+      '头像在左周次在右',
+      '(() => { const avatar = document.querySelector(".account-avatar")?.getBoundingClientRect(); const brief = document.querySelector(".work-brief")?.getBoundingClientRect(); const clock = document.querySelector(".week-clock")?.getBoundingClientRect(); return Boolean(avatar && brief && clock && avatar.left < brief.left && brief.left < clock.left); })()',
+      '顶部头像位在左，周次时间在右'
+    ));
+    checks.push(await expressionCheck(
+      client,
       '首页不抢推广告',
       'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 0',
       '每日 Buff 已移到补给页'
