@@ -158,6 +158,12 @@ async function runViewportSmoke(debugPort, viewport) {
     ));
     checks.push(await expressionCheck(
       client,
+      '头像稍左标题更宽',
+      '(() => { const header = document.querySelector(".mobile-status")?.getBoundingClientRect(); const avatar = document.querySelector(".account-avatar")?.getBoundingClientRect(); const brief = document.querySelector(".work-brief")?.getBoundingClientRect(); return Boolean(header && avatar && brief && avatar.left - header.left <= 48 && brief.width >= 190); })()',
+      '头像靠左一点，标题档案区域保留更宽的可用空间'
+    ));
+    checks.push(await expressionCheck(
+      client,
       '首页不抢推广告',
       'document.querySelectorAll("[data-ad=\\"dailyBuff\\"]").length === 0',
       '每日 Buff 已移到补给页'
