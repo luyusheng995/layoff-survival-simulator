@@ -680,6 +680,12 @@ test('mobile header shows savings total beside launch link', () => {
   assert.ok(smoke.includes('存款总数'));
 });
 
+test('index versions runtime assets for public cache busting', () => {
+  const index = readFileSync('index.html', 'utf8');
+  assert.ok(index.includes('./src/styles.css?v='));
+  assert.ok(index.includes('./src/main.js?v='));
+});
+
 test('pages package manifest contains runtime static assets only', async () => {
   const { createPagesPackageManifest } = await import('../src/game/pages-package.js');
   const manifest = createPagesPackageManifest();
