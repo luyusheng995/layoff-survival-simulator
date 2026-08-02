@@ -110,6 +110,7 @@ async function runViewportSmoke(debugPort, viewport) {
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
     checks.push(await textCheck(client, '工位档案', '工位档案'));
+    checks.push(await textCheck(client, '员工编号', 'DS-'));
     checks.push(await textCheck(client, '存款总数', '存款 ¥5,000'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
     checks.push(await textCheck(client, '行动区', '今日行动'));
@@ -186,6 +187,8 @@ async function runViewportSmoke(debugPort, viewport) {
     await sleep(300);
 
     checks.push(await textCheck(client, '精力用完提示', '精力用完'));
+    checks.push(await textCheck(client, '企业通知样式', '企业通知'));
+    checks.push(await textCheck(client, '组织风险提示', '组织风险'));
     checks.push(await expressionCheck(
       client,
       '首个事件出现',

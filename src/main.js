@@ -78,6 +78,19 @@ function riskText() {
   return '风平浪静';
 }
 
+function employeeId() {
+  return `DS-${String(996 + state.day).padStart(5, '0')}`;
+}
+
+function noticeSource(type) {
+  const sources = {
+    daily: '企业微信 · 行政助手',
+    crisis: '飞书 · HRBP 紧急提醒',
+    opportunity: '内网 OA · 机会流转'
+  };
+  return sources[type] || '内网 OA · 公司播报';
+}
+
 function difficultyLabel() {
   return getDifficulty(state.difficultyId).label;
 }
@@ -492,9 +505,9 @@ function renderMobileStatus() {
           <span>企</span>
         </div>
         <div class="work-brief" aria-label="工位档案">
-          <span class="work-kicker">工位档案</span>
+          <span class="work-kicker">工位档案 · ${employeeId()}</span>
           <strong>大厂裁员生存模拟器</strong>
-          <small>普通员工 · ${difficultyLabel()} · 撑过 90 天</small>
+          <small>普通员工 · ${difficultyLabel()} · 风险 ${riskText()}</small>
           <div class="header-actions">
             <span class="balance-chip">存款 ${money(state.stats.savings)}</span>
             <button class="status-copy-button" data-copy-launch="true">公开试玩链接</button>
@@ -556,14 +569,20 @@ function renderMobileMission() {
     : (brief.visible ? brief.summary : funnel.summary);
 
   return `
-    <section class="mission-card" aria-label="当前任务">
+    <section class="mission-card ${activeEvent ? 'company-notice-card' : ''}" aria-label="当前任务">
       <div class="mission-head">
         <div>
-          <span>当前任务</span>
+          <span>${activeEvent ? '企业通知' : '当前任务'}</span>
           <h2>${escapeHtml(missionTitle)}</h2>
         </div>
-        <b>${state.dailyBuffs?.slackSafe ? '今日 Buff' : (state.energy > 0 ? '稳定' : '结算')}</b>
+        <b>${activeEvent ? '待处理' : (state.dailyBuffs?.slackSafe ? '今日 Buff' : (state.energy > 0 ? '稳定' : '结算'))}</b>
       </div>
+      ${activeEvent ? `
+        <div class="notice-meta">
+          <span>${escapeHtml(noticeSource(activeEvent.type))}</span>
+          <span>组织风险 ${escapeHtml(riskText())}</span>
+        </div>
+      ` : ''}
       <p class="mission-meta">${escapeHtml(missionMeta)}</p>
       <p>${escapeHtml(missionBody)}</p>
       ${state.logs[0] ? `<div class="mission-feedback">${escapeHtml(state.logs[0])}</div>` : ''}
@@ -718,6 +737,10 @@ function renderShareCard(report) {
   return `
     <section class="share-card">
       <div class="report-stamp">HR REVIEW</div>
+      <div class="certificate-head">
+        <span>LAYOFF SURVIVAL CERTIFICATE</span>
+        <b>幸存证明</b>
+      </div>
       <span class="event-type">打工人报告</span>
       <h3>${escapeHtml(report.shareHeadline)}</h3>
       <p class="tier-line">${escapeHtml(report.survivalTier)} · ${escapeHtml(report.endingDescription)}</p>
@@ -733,7 +756,7 @@ function renderShareCard(report) {
         <span><strong>${report.adsWatched}</strong><small>广告次数</small></span>
       </div>
       <p>${escapeHtml(report.diagnosis)}</p>
-      <small class="poster-code">${escapeHtml(report.posterCode)}</small>
+      <small class="poster-code">证明编号：${escapeHtml(report.posterCode)}</small>
     </section>
   `;
 }

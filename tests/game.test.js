@@ -686,8 +686,25 @@ test('mobile header shows savings total beside launch link', () => {
   const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
   assert.ok(main.includes('balance-chip'));
   assert.ok(main.includes('存款 ${money(state.stats.savings)}'));
+  assert.ok(main.includes('employeeId()'));
+  assert.ok(main.includes('风险 ${riskText()}'));
   assert.ok(styles.includes('.header-actions'));
   assert.ok(smoke.includes('存款总数'));
+});
+
+test('intranet notice and survival certificate polish the theme', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
+  assert.ok(main.includes('noticeSource'));
+  assert.ok(main.includes('企业通知'));
+  assert.ok(main.includes('幸存证明'));
+  assert.ok(main.includes('LAYOFF SURVIVAL CERTIFICATE'));
+  assert.ok(styles.includes('.company-notice-card'));
+  assert.ok(styles.includes('.certificate-head'));
+  assert.ok(smoke.includes('企业通知样式'));
+  assert.ok(smoke.includes('组织风险提示'));
+  assert.ok(smoke.includes('员工编号'));
 });
 
 test('index versions runtime assets for public cache busting', () => {
