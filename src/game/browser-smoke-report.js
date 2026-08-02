@@ -1,3 +1,9 @@
+export const GAMEPLAY_EVENT_TYPE_TEXTS = ['日常事件', '危机事件', '机遇事件'];
+
+export function createGameplayEventTypeCheckExpression() {
+  return `document.body && ${JSON.stringify(GAMEPLAY_EVENT_TYPE_TEXTS)}.some((text) => document.body.innerText.includes(text))`;
+}
+
 export function createBrowserSmokeReport(results, options = {}) {
   const normalized = results.map((result) => {
     const checks = result.checks || [];

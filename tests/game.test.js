@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
+import vm from 'node:vm';
 import { createInitialState } from '../src/game/state.js';
 import { applyAction } from '../src/game/actions.js';
 import { EVENTS } from '../src/data/events.js';
@@ -28,7 +29,11 @@ import { createReleaseChecklist, createReleaseChecklistMarkdown } from '../src/g
 import { createReleaseManifest, createReleaseReadme, createStoredZip } from '../src/game/release-package.js';
 import { createFirstMinuteFunnel } from '../src/game/funnel.js';
 import { createPlaytestMarkdown, runPlaytestScenarios } from '../src/game/playtest.js';
-import { createBrowserSmokeMarkdown, createBrowserSmokeReport } from '../src/game/browser-smoke-report.js';
+import {
+  createBrowserSmokeMarkdown,
+  createBrowserSmokeReport,
+  createGameplayEventTypeCheckExpression
+} from '../src/game/browser-smoke-report.js';
 import { createAdInventoryItems } from '../src/game/ad-inventory.js';
 
 test('initial state matches prototype stat rules', () => {
@@ -526,6 +531,16 @@ test('browser smoke markdown includes screenshots and viewport summary', () => {
   assert.ok(markdown.includes('整体状态：PASS'));
   assert.ok(markdown.includes('390x844'));
   assert.ok(markdown.includes('docs/qa/screenshots/mobile.png'));
+});
+
+test('browser smoke accepts any gameplay event type after actions resolve', () => {
+  const expression = createGameplayEventTypeCheckExpression();
+  for (const eventTypeText of ['日常事件', '危机事件', '机遇事件']) {
+    const matched = vm.runInNewContext(expression, {
+      document: { body: { innerText: `第 1 天\n${eventTypeText}\n老板突击查岗` } }
+    });
+    assert.equal(matched, true, eventTypeText);
+  }
 });
 
 test('ad inventory marks the featured recommendation as non-actionable', () => {

@@ -4,7 +4,11 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
-import { createBrowserSmokeMarkdown, createBrowserSmokeReport } from '../src/game/browser-smoke-report.js';
+import {
+  createBrowserSmokeMarkdown,
+  createBrowserSmokeReport,
+  createGameplayEventTypeCheckExpression
+} from '../src/game/browser-smoke-report.js';
 
 const root = new URL('../', import.meta.url);
 const appUrl = process.env.SMOKE_URL || 'http://127.0.0.1:4173/';
@@ -139,7 +143,12 @@ async function runViewportSmoke(debugPort, viewport) {
     await sleep(300);
 
     checks.push(await textCheck(client, '广告奖励结算', '今日 Buff'));
-    checks.push(await textCheck(client, '首个事件出现', '日常事件'));
+    checks.push(await expressionCheck(
+      client,
+      '首个事件出现',
+      createGameplayEventTypeCheckExpression(),
+      '包含日常、危机或机遇事件类型'
+    ));
 
     const image = await client.send('Page.captureScreenshot', {
       format: 'png',
