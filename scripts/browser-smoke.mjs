@@ -110,10 +110,9 @@ async function runViewportSmoke(debugPort, viewport) {
 
     checks.push(await textCheck(client, '首屏标题', '大厂裁员生存模拟器'));
     checks.push(await textCheck(client, '工位档案', '工位档案'));
-    checks.push(await textCheck(client, '今日精力', '今日精力'));
-    checks.push(await textCheck(client, '操作说明', '消耗 1 精力'));
     checks.push(await textCheck(client, '上线分享', '公开试玩链接'));
     checks.push(await textCheck(client, '行动区', '今日行动'));
+    checks.push(await textCheck(client, '行动说明', '点一次扣 1 点'));
     checks.push(await expressionCheck(
       client,
       '无横向溢出',
@@ -135,8 +134,8 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await expressionCheck(
       client,
       '主要按钮可点击',
-      'document.querySelectorAll("[data-action]").length >= 5 && Array.from(document.querySelectorAll("[data-action]")).every((button) => button.innerText.includes("消耗 1 精力"))',
-      '5 个行动按钮存在且说明消耗 1 精力'
+      'document.querySelectorAll("[data-action]").length >= 5 && Boolean(document.querySelector(".inline-energy")) && !document.body.innerText.includes("消耗 1" + " 精力")',
+      '5 个行动按钮存在，精力显示在今日行动旁'
     ));
     checks.push(await expressionCheck(
       client,

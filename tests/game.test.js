@@ -613,8 +613,9 @@ test('browser smoke enforces the single screen mobile dashboard contract', () =>
   assert.ok(script.includes('移动端无上下滚动'));
   assert.ok(script.includes('document.documentElement.scrollHeight <= window.innerHeight + 1'));
   assert.ok(script.includes('工位档案'));
-  assert.ok(script.includes('今日精力'));
   assert.ok(script.includes('今日行动'));
+  assert.ok(script.includes('点一次扣 1 点'));
+  assert.equal(script.includes('消耗 1 精力'), false);
   assert.ok(script.includes('data-tab="home"'));
 });
 
@@ -635,13 +636,18 @@ test('mobile dashboard copy and palette match the layoff survival theme', () => 
 test('home dashboard teaches the daily energy operation loop', () => {
   const main = readFileSync('src/main.js', 'utf8');
   const smoke = readFileSync('scripts/browser-smoke.mjs', 'utf8');
-  assert.ok(main.includes('今日精力'));
-  assert.ok(main.includes('消耗 1 精力'));
+  assert.ok(main.includes('今日行动'));
+  assert.ok(main.includes('${state.energy}/3'));
+  assert.ok(main.includes('点一次扣 1 点'));
   assert.ok(main.includes('精力用完'));
-  assert.ok(main.includes('energy-dot'));
+  assert.equal(main.includes('今日精力'), false);
+  assert.equal(main.includes('消耗 1 精力'), false);
+  assert.equal(main.includes('energy-dot'), false);
+  assert.equal(main.includes('renderSurvivalSummary()'), false);
+  assert.ok(main.includes('work-brief'));
   assert.equal(main.includes('<h2>能力面板</h2>'), false);
-  assert.ok(smoke.includes('今日精力'));
-  assert.ok(smoke.includes('消耗 1 精力'));
+  assert.ok(smoke.includes('点一次扣 1 点'));
+  assert.equal(smoke.includes('消耗 1 精力'), false);
 });
 
 test('pages package manifest contains runtime static assets only', async () => {

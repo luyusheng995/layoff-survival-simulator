@@ -72,16 +72,18 @@ button:disabled {
 }
 
 .mobile-status {
-  min-height: 84px;
+  min-height: 124px;
   display: grid;
-  grid-template-columns: minmax(88px, 0.34fr) minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: minmax(92px, 0.3fr) minmax(0, 1fr);
+  gap: 14px;
   align-items: center;
   border: 2px solid rgba(31, 41, 51, 0.11);
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.74);
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, rgba(31, 41, 51, 0.045) 1px, transparent 1px) 0 0 / 18px 18px,
+    rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
-  padding: 12px 14px;
+  padding: 14px;
 }
 
 .week-clock strong,
@@ -106,6 +108,35 @@ button:disabled {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 7px;
+}
+
+.work-brief {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 4px 10px;
+}
+
+.work-brief span {
+  grid-column: 1 / -1;
+  color: var(--risk);
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.work-brief strong {
+  min-width: 0;
+  font-size: 22px;
+  line-height: 1.08;
+  font-weight: 1000;
+}
+
+.work-brief small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .status-pills span,
@@ -140,13 +171,13 @@ button:disabled {
 .dashboard-home {
   min-height: 0;
   display: grid;
-  grid-template-rows: 86px 118px minmax(0, 1fr) 68px;
+  grid-template-rows: minmax(0, 1fr) 68px;
   gap: 10px;
   overflow: hidden;
 }
 
 .dashboard-home.event-mode {
-  grid-template-rows: 86px 118px minmax(0, 1fr) 68px;
+  grid-template-rows: minmax(0, 1fr) 68px;
 }
 
 .character-card,
@@ -179,74 +210,10 @@ button:disabled {
   padding: 18px 18px 14px;
 }
 
-.survival-summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid rgba(31, 41, 51, 0.12);
-  border-radius: 8px;
-  background:
-    linear-gradient(90deg, rgba(31, 41, 51, 0.05) 1px, transparent 1px) 0 0 / 20px 20px,
-    rgba(255, 255, 255, 0.82);
-  box-shadow: var(--shadow);
-  padding: 12px 14px;
-}
-
-.survival-summary span,
-.energy-guide span,
 .tab-page-header span {
   display: block;
   color: var(--risk);
   font-size: 12px;
-  font-weight: 1000;
-}
-
-.survival-summary strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 20px;
-  line-height: 1.1;
-}
-
-.survival-summary small {
-  display: block;
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.survival-summary dl {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(46px, auto));
-  gap: 8px;
-  margin: 0;
-}
-
-.survival-summary dl span {
-  min-width: 0;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
-  padding: 7px 8px;
-  color: var(--text);
-  box-shadow: inset 0 0 0 1px rgba(31, 41, 51, 0.08);
-}
-
-.survival-summary dt,
-.survival-summary dd {
-  margin: 0;
-}
-
-.survival-summary dt {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.survival-summary dd {
-  margin-top: 2px;
-  font-size: 15px;
   font-weight: 1000;
 }
 
@@ -341,62 +308,6 @@ button:disabled {
     linear-gradient(145deg, #1f2933 0%, #2b3740 58%, #176b5d 100%);
   color: #fff;
   padding: 15px;
-}
-
-.energy-guide {
-  display: grid;
-  gap: 10px;
-  align-content: center;
-  overflow: hidden;
-  border: 1px solid rgba(23, 107, 93, 0.26);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(223, 244, 235, 0.86)),
-    linear-gradient(90deg, rgba(31, 41, 51, 0.04) 1px, transparent 1px) 0 0 / 18px 18px;
-  box-shadow: var(--shadow);
-  padding: 14px;
-}
-
-.energy-guide-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.energy-guide strong {
-  display: block;
-  margin-top: 1px;
-  font-size: 42px;
-  line-height: 0.95;
-  color: var(--ink);
-}
-
-.energy-dots {
-  display: flex;
-  gap: 9px;
-}
-
-.energy-dot {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  box-shadow: inset 0 0 0 2px rgba(31, 41, 51, 0.08);
-}
-
-.energy-dot.available {
-  background: var(--mint);
-}
-
-.energy-dot.spent {
-  background: rgba(31, 41, 51, 0.15);
-}
-
-.energy-guide p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.45;
 }
 
 .mission-head {
@@ -527,6 +438,24 @@ button:disabled {
   font-size: 13px;
 }
 
+.panel-title-row h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title-row .inline-energy {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  background: rgba(23, 107, 93, 0.11);
+  color: var(--accent);
+  padding: 3px 9px;
+  font-size: 16px;
+  line-height: 1;
+}
+
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -558,16 +487,6 @@ button:disabled {
   padding: 10px;
 }
 
-.action-cost {
-  display: inline-flex;
-  border-radius: 999px;
-  background: rgba(23, 107, 93, 0.11);
-  color: var(--accent);
-  padding: 4px 7px;
-  font-size: 11px;
-  font-weight: 1000;
-}
-
 .action-title,
 .choice-title {
   display: block;
@@ -575,7 +494,7 @@ button:disabled {
 }
 
 .action-title {
-  margin-top: 7px;
+  margin-top: 0;
   min-height: auto;
   font-size: 16px;
   line-height: 1.2;
@@ -618,9 +537,9 @@ button:disabled {
 
 .growth-strip span {
   min-width: 0;
-  border: 1px solid rgba(31, 41, 51, 0.13);
+  border: 1px solid rgba(31, 41, 51, 0.09);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.58);
   padding: 7px;
 }
 
@@ -1063,8 +982,10 @@ button:disabled {
   }
 
   .mobile-status {
-    min-height: 78px;
-    padding: 10px;
+    min-height: 112px;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 10px;
+    padding: 11px;
   }
 
   .week-clock strong {
@@ -1075,18 +996,32 @@ button:disabled {
     font-size: 22px;
   }
 
-  .status-pills span {
+  .work-brief {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+
+  .work-brief strong {
+    font-size: 18px;
+  }
+
+  .work-brief small {
+    font-size: 11px;
+  }
+
+  .status-copy-button {
+    justify-self: start;
     padding: 6px 8px;
     font-size: 12px;
   }
 
   .dashboard-home {
-    grid-template-rows: 82px 114px minmax(0, 1fr) 64px;
+    grid-template-rows: minmax(0, 1fr) 64px;
     gap: 7px;
   }
 
   .dashboard-home.event-mode {
-    grid-template-rows: 82px 114px minmax(0, 1fr) 64px;
+    grid-template-rows: minmax(0, 1fr) 64px;
   }
 
   .character-card {
@@ -1127,35 +1062,6 @@ button:disabled {
   .task-chip-grid span {
     font-size: 12px;
     padding: 7px 8px;
-  }
-
-  .survival-summary {
-    padding: 10px;
-  }
-
-  .survival-summary strong {
-    font-size: 17px;
-  }
-
-  .survival-summary dl {
-    gap: 5px;
-  }
-
-  .survival-summary dl span {
-    padding: 6px;
-  }
-
-  .energy-guide {
-    padding: 12px;
-  }
-
-  .energy-guide strong {
-    font-size: 36px;
-  }
-
-  .energy-dot {
-    width: 26px;
-    height: 26px;
   }
 
   .action-button {
