@@ -669,12 +669,14 @@ test('mobile header reserves avatar slot and moves week clock right', () => {
   assert.ok(main.indexOf('account-avatar') < main.indexOf('work-brief'));
   assert.ok(main.indexOf('work-brief') < main.indexOf('week-clock'));
   assert.ok(styles.includes('.identity-cluster'));
-  assert.ok(styles.includes('grid-template-columns: 64px minmax(0, 1fr);'));
+  assert.ok(styles.includes('grid-template-columns: 62px minmax(0, 1fr);'));
+  assert.ok(styles.includes('grid-template-columns: minmax(0, 1fr) 54px;'));
+  assert.ok(styles.includes('text-align: center;'));
   assert.equal(styles.includes('grid-template-columns: 64px minmax(0, max-content);'), false);
   assert.ok(styles.includes('.account-avatar'));
   assert.ok(smoke.includes('头像在左周次在右'));
   assert.ok(smoke.includes('顶部内容分布均衡'));
-  assert.ok(smoke.includes('头像稍左标题更宽'));
+  assert.ok(smoke.includes('标题居中且更宽'));
 });
 
 test('mobile header shows savings total beside launch link', () => {

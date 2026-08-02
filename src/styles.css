@@ -72,10 +72,10 @@ button:disabled {
 }
 
 .mobile-status {
-  min-height: 124px;
+  min-height: 108px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 54px;
+  gap: 6px;
   align-items: center;
   border: 2px solid rgba(31, 41, 51, 0.11);
   border-radius: 22px;
@@ -83,20 +83,20 @@ button:disabled {
     linear-gradient(90deg, rgba(31, 41, 51, 0.045) 1px, transparent 1px) 0 0 / 18px 18px,
     rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
-  padding: 14px 16px 14px 18px;
+  padding: 12px 12px 12px 14px;
 }
 
 .identity-cluster {
   min-width: 0;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
 }
 
 .account-avatar {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   display: grid;
   place-items: center;
   border-radius: 20px;
@@ -128,13 +128,13 @@ button:disabled {
 }
 
 .week-clock strong {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
 }
 
 .week-clock span {
   margin-top: 4px;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 900;
 }
 
@@ -150,7 +150,7 @@ button:disabled {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: 4px 10px;
+  gap: 4px 8px;
 }
 
 .work-brief .work-kicker {
@@ -161,10 +161,13 @@ button:disabled {
 }
 
 .work-brief strong {
+  grid-column: 1 / -1;
   min-width: 0;
+  width: 100%;
   font-size: 20px;
   line-height: 1.08;
   font-weight: 1000;
+  text-align: center;
 }
 
 .work-brief small {
@@ -1026,20 +1029,20 @@ button:disabled {
   }
 
   .mobile-status {
-    min-height: 112px;
-    grid-template-columns: minmax(0, 1fr) 62px;
-    gap: 8px;
-    padding: 11px 12px 11px 14px;
+    min-height: 98px;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    gap: 6px;
+    padding: 10px 10px 10px 12px;
   }
 
   .identity-cluster {
-    grid-template-columns: 52px minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 8px;
   }
 
   .account-avatar {
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     border-radius: 18px;
   }
 
@@ -1050,11 +1053,11 @@ button:disabled {
   }
 
   .week-clock strong {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .week-clock span {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .work-brief {
@@ -1067,7 +1070,7 @@ button:disabled {
   }
 
   .work-brief strong {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .work-brief small {
