@@ -193,7 +193,12 @@ async function runViewportSmoke(debugPort, viewport) {
     checks.push(await textCheck(client, '精力用完提示', '精力用完'));
     checks.push(await textCheck(client, '企业通知样式', '企业通知'));
     checks.push(await textCheck(client, '组织风险提示', '组织风险'));
-    checks.push(await textCheck(client, '企业微信气泡', '企业微信'));
+    checks.push(await expressionCheck(
+      client,
+      '企业微信气泡',
+      '(() => { const nudge = document.querySelector(".wechat-nudge"); return Boolean(nudge && /(企业微信|HRBP|直属领导)/.test(nudge.innerText)); })()',
+      '事件来源气泡展示企业微信、HRBP 或直属领导提示'
+    ));
     checks.push(await expressionCheck(
       client,
       '首个事件出现',

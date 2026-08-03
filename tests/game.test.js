@@ -739,6 +739,7 @@ test('office intel adds rumor gaze and work title hooks', async () => {
   assert.ok(smoke.includes('老板凝视值'));
   assert.ok(smoke.includes('摸鱼彩蛋'));
   assert.ok(smoke.includes('企业微信气泡'));
+  assert.ok(smoke.includes('HRBP|直属领导'));
 });
 
 test('three consecutive slack off actions trigger the stall meeting easter egg', () => {
