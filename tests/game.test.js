@@ -752,6 +752,16 @@ test('three consecutive slack off actions trigger the stall meeting easter egg',
   assert.ok(state.logs[0].includes('厕所隔间战略会议'));
 });
 
+test('strategy page spacing separates difficulty heading from cards', () => {
+  const main = readFileSync('src/main.js', 'utf8');
+  const styles = readFileSync('src/styles.css', 'utf8');
+  assert.ok(main.includes('strategy-panel difficulty-panel'));
+  assert.ok(main.includes('strategy-panel talent-panel'));
+  assert.ok(styles.includes('.strategy-panel .talent-grid'));
+  assert.ok(styles.includes('margin-top: 12px;'));
+  assert.ok(styles.includes('.talent-panel'));
+});
+
 test('index versions runtime assets for public cache busting', () => {
   const index = readFileSync('index.html', 'utf8');
   assert.ok(index.includes('./src/styles.css?v='));

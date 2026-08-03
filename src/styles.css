@@ -769,7 +769,7 @@ button:disabled {
 .secondary-tab-panel {
   min-height: 0;
   display: grid;
-  gap: 10px;
+  gap: 12px;
   overflow: auto;
   overscroll-behavior: contain;
   padding-right: 2px;
@@ -838,6 +838,24 @@ button:disabled {
 .onboarding-tasks {
   display: grid;
   gap: 8px;
+}
+
+.strategy-panel {
+  padding: 15px;
+}
+
+.strategy-panel .talent-grid {
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.strategy-panel .panel-note {
+  margin: 7px 0 0;
+}
+
+.talent-panel {
+  margin-top: 4px;
+  border-top-color: rgba(23, 107, 93, 0.24);
 }
 
 .choice-button,

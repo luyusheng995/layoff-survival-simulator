@@ -357,7 +357,7 @@ function renderOnboarding() {
 function renderTalentPanel() {
   const canSelect = talentsUnlocked || state.talentsUnlocked;
   return `
-    <section class="panel">
+    <section class="panel strategy-panel talent-panel">
       <h2>初始天赋</h2>
       <p class="panel-note">${canSelect ? '选一个开局剧本，立刻重开生效。' : '看广告解锁 3 个初始天赋，本局先当普通打工人。'}</p>
       <div class="talent-grid">
@@ -378,7 +378,7 @@ function renderTalentPanel() {
 
 function renderDifficultyPanel() {
   return `
-    <section class="panel">
+    <section class="panel strategy-panel difficulty-panel">
       <h2>裁员强度</h2>
       <div class="talent-grid">
         ${DIFFICULTIES.map((difficulty) => `
